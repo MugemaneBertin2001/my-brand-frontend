@@ -1,0 +1,93 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-color:#F0F0F6;
+}
+body main{
+    display:  flex;
+    flex-wrap: wrap;
+}
+body main .profile-card{
+    width: 13%;
+    background-color: #FFFFFF;
+    padding: 20px;
+    position:fixed;
+}
+body main div .image-div{
+    text-align: center;
+}
+body main div .image-div img{
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+}
+body main div h1{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 123.6%;
+    text-align: center;
+}
+body main div p{
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 15px;
+    line-height: 123.6%;
+    text-align: center;
+
+
+}
+body main div .social-media-div{
+    display: flex;
+    flex-wrap:wrap;
+    gap: 2;
+}
+body main div .social-media-div img{
+    border-radius: 100%;
+    margin: 3px;
+}
+body main .identity-rows div {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+}
+body main .identity-rows div .lead{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    width: 50%;
+}
+body main .identity-rows div .follow{
+    font-size: 16px;
+    width: 50%;
+    text-align: right   ;
+
+}
+body main .identity-rows div span{
+    background-color: #FFB400;
+    padding:0  5px;
+}
+body main .languages-rows  h1,
+body main .languages-rows p,
+body main .skills-rows  h1,
+body main .skills-rows p{
+    text-align: left;
+}
+body main .skills-rows p,
+body main .languages-rows p{
+    border-bottom: 2px solid #FFB400;
+    padding: 6px 0;
+}
+body main div button{
+    width: 100%;
+    padding: 10px 5px;
+    background-color: #FFB400;
+    font-weight: bolder;
+    border: 0;
+    font-size: 20px;
+}
+body main div button img{
+  width: 20%;
+  height: 20%;
+}

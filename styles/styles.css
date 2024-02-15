@@ -2,58 +2,46 @@
 body {
   padding: 0;
   margin: 0;
-  background-color: #F0F0F6;
+  background-color: #f0f0f6;
+  font-family: 'Inter', sans-serif;
 }
 
 body main {
   display: flex;
+}
+.main-content{
+  margin: 0 1rem;
 }
 
 /* Profile card */
 .profile-card {
   width: 30%;
   height: fit-content;
-  background-color: #FFFFFF;
+  background-color: #fff;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  margin-right: 20px;
-}
-
-.image-div {
-  text-align: center;
-}
-
-.image-div img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .profile-card h1,
-.profile-card p,
-.identity-rows .lead,
-.identity-rows .follow,
-.languages-rows h1,
-.languages-rows p,
-.skills-rows h1,
-.skills-rows p,
-.content-body h1,
-.content-body p,
-.testimonial .author-info .name,
-.testimonial .author-info .title {
-  font-family: 'Inter', sans-serif;
-}
-
-.profile-card h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
 .profile-card p {
+  margin-top: 20px;
   font-size: 18px;
-  margin-top: 10px;
+}
+.image-div{
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  border-radius: 50%;
+
+}
+.image-div img{
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+.profile-card h1 {
+  font-weight: bold;
 }
 
 .social-media-div {
@@ -62,13 +50,11 @@ body main {
   margin-top: 5px;
 }
 
-.social-media-div a {
-  margin: 0 10px;
-}
-
 .social-media-div img {
   width: 30px;
   height: 30px;
+  border-radius: 50%;
+  margin: auto;
 }
 
 .identity-rows div {
@@ -90,7 +76,7 @@ body main {
 }
 
 .identity-rows div span {
-  background-color: #FFB400;
+  background-color: #ffb400;
 }
 
 .languages-rows h1,
@@ -109,9 +95,8 @@ body main {
 .profile-card Button {
   width: 100%;
   padding: 10px;
-  background-color: #FFB400;
-  color: #FFFFFF;
-  font-size: 18px;
+  background-color: #ffb400;
+  color: #fff;
   font-weight: bold;
   border: none;
   border-radius: 5px;
@@ -120,20 +105,18 @@ body main {
 }
 
 /* Hero banner */
-.body main div .hero-banner {
+.hero-banner {
   display: flex;
   gap: 2%;
   height: auto;
-  background-color: #FFFFFF;
+  background-color: #fff;
+  align-items: start;
 }
 
-.body main div .hero-banner div {
-  width: 100%;
-}
-
-.body main div .hero-banner div img {
+.hero-banner img {
   width: 100%;
   height: auto;
+  border-radius: 10px;
 }
 
 .content-body {
@@ -154,7 +137,7 @@ body main {
 
 .content-body #career {
   font-size: 1.2rem;
-  color: #FFB400;
+  color: #ffb400;
 }
 
 .content-body p {
@@ -165,23 +148,23 @@ body main {
 
 .content-body button {
   padding: 10px 20px;
-  background-color: #FFB400;
+  background-color: #ffb400;
   color: #fff;
   border: none;
   border-radius: 5px;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .content-body button:hover {
-  background-color: #FFA000;
+  background-color: #ffa000;
 }
 
 /* Services content */
 .services-content {
   margin: 2rem 0;
-  background-color: #FFFFFF;
+  background-color: #fff;
 }
 
 .services-content .heading-banner {
@@ -189,12 +172,11 @@ body main {
   text-align: center;
 }
 
-.services-content .heading-banner h1 {
-  font-size: 48px;
-}
+.services-content .heading-banner h1{
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
 
-.services-content .heading-banner p {
-  font-size: 20px;
 }
 
 .services-set {
@@ -227,6 +209,12 @@ body main {
 .testimonials-content .heading-banner {
   text-align: center;
 }
+.testimonials-content .heading-banner h1{
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+
+}
 
 /* Testimonial Container */
 .testimonials {
@@ -248,7 +236,7 @@ body main {
 .rating {
   font-size: 14px;
   margin-bottom: 10px;
-  color: #FFB400;
+  color: #ffb400;
 }
 
 /* Testimonial Labels */
@@ -294,9 +282,7 @@ body main {
 /* Responsive Styling */
 @media screen and (max-width: 768px) {
   .profile-card {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 20px;
+    display: none;
   }
 
   .image-div img {
@@ -325,7 +311,8 @@ body main {
     font-size: 18px;
   }
 
-  .languages-rows p,.skills-rows p {
+  .languages-rows p,
+  .skills-rows p {
     font-size: 14px;
   }
 
@@ -426,7 +413,7 @@ body main .identity-rows div .follow {
 }
 
 body main .identity-rows div span {
-  background-color: #FFB400;
+  background-color: #ffb400;
 }
 
 /* Languages and skills rows */
@@ -439,7 +426,7 @@ body main .skills-rows p {
 
 body main .skills-rows p,
 body main .languages-rows p {
-  border-bottom: 2px solid #FFB400;
+  border-bottom: 2px solid #ffb400;
   padding: 6px 0;
 }
 
@@ -447,7 +434,7 @@ body main .languages-rows p {
 body main div button {
   width: 100%;
   padding: 10px 5px;
-  background-color: #FFB400;
+  background-color: #ffb400;
   font-weight: bolder;
   border: 0;
   font-size: 20px;
@@ -458,4 +445,284 @@ body main div button img {
   height: 20%;
 }
 
- 
+/* Hero banner */
+.hero-banner {
+  display: flex;
+  flex-direction: row;
+  align-items:start;
+  background-color: #FFFFFF;
+}
+
+.body main div .hero-banner div {
+  width: 100%;
+}
+
+.body main div .hero-banner div img {
+  width: 100%;
+  height: auto;
+}
+
+.content-body {
+  flex: 1; /* Take up remaining space */
+}
+
+/* Adjust layout for smaller screens */
+@media screen and (max-width: 768px) {
+  .hero-banner {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .content-body {
+      order: 2; /* Move content below image */
+      text-align: center; /* Center text */
+  }
+
+  .hero-banner img {
+      width: 100%; /* Make image full width */
+  }
+}
+
+/* Testimonial styles */
+.testimonial {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.rating {
+  font-size: 24px;
+  color: #ffb400;
+  margin-bottom: 10px;
+}
+
+.labels {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 10px;
+}
+
+.content {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+}
+
+.author-image img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.author-info {
+  font-size: 16px;
+}
+
+.author-info .name {
+  font-weight: bold;
+}
+
+.author-info .title {
+  font-style: italic;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 768px) {
+  .testimonial {
+      width: 100%;
+  }
+}
+
+/* Education section */
+.education-section {
+  padding: 1rem;
+  margin-top: 40px;
+  background-color: #FFFFFF;
+}
+
+.education-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.education-section p{
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.education-cards {
+  width: fit-content;
+  margin:  0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.education-card {
+  border-radius: 10px;
+  padding: 20px;
+  width: 25%;
+  background-color: #fff23f;
+  box-shadow: #666666;
+}
+.education-card .title{
+  font-size: x-large;
+  font-weight: bold;
+  margin: 1rem 0;
+
+}
+.certificate-issuer{
+  font-style: italic;
+  color: #000;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+@media screen and (max-width: 768px) {
+  .education-card {
+      width: 100%;
+      margin: 0 auto;
+  }
+}
+
+/* Work History section */
+.work-history-section {
+  margin-top: 40px;
+  background-color: #FFFFFF;
+  padding: 1rem;
+}
+
+.work-history-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.work-history-section p {
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+/* Work History cards container */
+.work-history-cards {
+  width: fit-content;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+/* Work History card */
+.work-history-card {
+  background-color: #000000;
+  border-radius: 10px;
+  padding: 20px;
+  width: 40%; /* Adjust card width based on available space */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+/* Work History card elements */
+.work-history-card h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ffa000;
+  text-align: center;
+}
+
+.work-history-card p {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #FFFFFF;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .work-history-cards {
+    justify-content: center; /* Center align cards on smaller screens */
+  }
+  
+  .work-history-card {
+    width: calc(100% - 20px); /* Make cards full width on smaller screens with a small gap */
+    margin-bottom: 20px; /* Add bottom margin for spacing between cards */
+  }
+  .work-history-card{
+    margin: 0 auto;
+  }
+}
+
+/* Portfolio section */
+.portfolio-section {
+  margin-top: 40px;
+}
+
+.portfolio-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.portfolio-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Portfolio card */
+.portfolio-card {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  width: calc(25% - 10px); /* Adjust card width based on available space */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+/* Portfolio card elements */
+.portfolio-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.portfolio-card h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.portfolio-card p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.portfolio-card a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #FFB400;
+  color: #FFFFFF;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.portfolio-card a:hover {
+  background-color: #FFA000;
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio-card {
+      width: 100%; 
+      margin: 0 auto;
+  }
+}

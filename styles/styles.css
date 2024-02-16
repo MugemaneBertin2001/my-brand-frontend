@@ -280,7 +280,7 @@ body main {
 /* Media Queries */
 
 /* Responsive Styling */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .profile-card {
     display: none;
   }
@@ -321,7 +321,7 @@ body main {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .profile-card {
     display: none;
   }
@@ -463,23 +463,23 @@ body main div button img {
 }
 
 .content-body {
-  flex: 1; /* Take up remaining space */
+  flex: 1;  
 }
 
 /* Adjust layout for smaller screens */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .hero-banner {
       flex-direction: column;
       align-items: center;
   }
 
   .content-body {
-      order: 2; /* Move content below image */
-      text-align: center; /* Center text */
+      order: 2;  
+      text-align: center;  
   }
 
   .hero-banner img {
-      width: 100%; /* Make image full width */
+      width: 100%;
   }
 }
 
@@ -534,7 +534,7 @@ body main div button img {
 }
 
 /* Media query for small screens */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .testimonial {
       width: 100%;
   }
@@ -586,7 +586,7 @@ body main div button img {
   margin: 1rem 0;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .education-card {
       width: 100%;
       margin: 0 auto;
@@ -615,7 +615,6 @@ body main div button img {
 /* Work History cards container */
 .work-history-cards {
   width: fit-content;
-
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -628,7 +627,7 @@ body main div button img {
   background-color: #000000;
   border-radius: 10px;
   padding: 20px;
-  width: 40%; /* Adjust card width based on available space */
+  width: 40%; 
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
 }
 
@@ -648,14 +647,14 @@ body main div button img {
 }
 
 /* Media query for smaller screens */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .work-history-cards {
-    justify-content: center; /* Center align cards on smaller screens */
+    justify-content: center;
   }
   
   .work-history-card {
-    width: calc(100% - 20px); /* Make cards full width on smaller screens with a small gap */
-    margin-bottom: 20px; /* Add bottom margin for spacing between cards */
+    width: calc(100% - 20px); 
+    margin-bottom: 20px; 
   }
   .work-history-card{
     margin: 0 auto;
@@ -665,6 +664,7 @@ body main div button img {
 /* Portfolio section */
 .portfolio-section {
   margin-top: 40px;
+  background-color: #FFFFFF;
 }
 
 .portfolio-section h2 {
@@ -677,15 +677,17 @@ body main div button img {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  width:fit-content;
+  margin: 0 auto;
 }
 
 /* Portfolio card */
 .portfolio-card {
-  background-color: #FFFFFF;
+  background-color: #f9f9f9;
   border-radius: 10px;
   padding: 20px;
-  width: calc(25% - 10px); /* Adjust card width based on available space */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  width: 20%; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); 
 }
 
 /* Portfolio card elements */
@@ -720,9 +722,219 @@ body main div button img {
   background-color: #FFA000;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1250px) {
   .portfolio-card {
       width: 100%; 
       margin: 0 auto;
+  }
+}
+
+/* Base styles */
+.blog-section {
+  margin-top: 40px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.blog-section h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.blog-section p {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 20px;
+}
+
+.blog-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.blog-card {
+  flex: 1;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.blog-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px 10px 0 0;
+}
+
+.blog-info {
+  padding: 20px;
+}
+
+.blog-info h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.content-body p {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta a {
+  color: #FFB400;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.meta a:hover {
+  text-decoration: underline;
+}
+
+.comments-likes span {
+  font-size: 10px;
+  color: #666666;
+}
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .blog-card {
+      flex-basis: calc(50% - 20px);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .blog-card {
+      flex-basis: 100%;
+  }
+}
+
+
+/* Container styles */
+.great-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.contact-f-container,
+.contact-i-container {
+  flex: 1;
+  margin-right: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding:3rem 20px;
+}
+
+/* Contact form styles */
+.form-container {
+  max-width: 400px;
+  margin: auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #ffa000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Contact information styles */
+.contact-info-section {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffff;
+}
+
+.contact-info-section h2 {
+  margin-top: 0;
+}
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;  
+  height: 40px;
+  border-radius: 50%;  
+  background-color: #FFB400;  
+  margin-bottom: 10px;  
+  margin: 0 auto;
+}
+.icon-wrapper i {
+  color: #FFFFFF; 
+}
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+  .great-container {
+      flex-direction: column;
+  }
+
+  .contact-f-container,
+  .contact-i-container {
+      margin-right: 0;
+      margin-bottom: 20px;
+  }
+}
+
+.location-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.location-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+iframe{
+  width: 100%;
+  height: 40vh;
+}
+#map {
+  width: 100%;
+  height: fit-content;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} 
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+  #map {
+      height: 300px;
   }
 }

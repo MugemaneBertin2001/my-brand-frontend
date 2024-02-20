@@ -1,0 +1,107 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar-left {
+    background-color: #FFB400;
+    color: #fff;
+    width: 150px;
+    padding: 20px;
+    height: 100%;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+}
+.navbar  div{
+    padding: 1rem 0;
+    border-bottom: 2px #ffff solid;
+}
+
+.navbar ul li {
+    margin-bottom: 10px;
+    padding: 1rem 0;
+    font-size: 20px;
+    
+}
+.navbar ul li :hover{
+    color: #E723EB;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.navbar ul li a i {
+    margin-right: 10px;
+}
+
+.content {
+    flex: 1;
+    background-color: blue;
+    height: 100%;
+}
+.container .top-heading{
+    background-color: #FFB400;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;  
+    align-items: center
+}
+.user-logo{
+    margin-left: auto;
+}
+.user-logo i {
+    width: 40px;  
+    height: 40px; 
+    border-radius: 50%;
+    font-size: 24px;
+    color: #000; 
+    border-radius: 50%;  
+    padding: 10px;
+    background-color: #fff;
+    text-align: center;
+}
+.toggle-btn {
+    display: none; /* Hide toggle button by default */
+    cursor: pointer;
+}
+
+.top-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.toggle-btn i {
+    display: none; 
+}
+.toggle-btn .fa-bars {
+    display: inline-block; 
+}
+.toggle-btn .fa-window-close {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .toggle-btn {
+        display: block; /* Show toggle button on small screens */
+    }
+    .sidebar-left.show-sidebar {
+        display: block; /* Show sidebar when toggled on small screens */
+    }
+    .sidebar-left{
+        display: none;
+    }
+}

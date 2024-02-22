@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Article</title>
+    <link rel="stylesheet" href="../styles/dashboard.css">
+ 
+</head>
+<body>
+    <div class="article-container">
+        <a href="/" class="back-link">Go Back Home</a>
+        <div class="article-header">
+            <img class="article-image" src="../images/blogs/artificial-intelligence.jpg" alt="Article Image">
+            <h1 class="article-title">The Rise of Artificial Intelligence in Business</h1>
+        </div>
+        <div class="article-content">
+            <p>Artificial Intelligence (AI) is revolutionizing various industries, including business. It has become a driving force behind innovation, efficiency, and growth in today's digital age. Businesses are leveraging AI technologies to automate processes, analyze vast amounts of data, enhance decision-making, and improve customer experiences.</p>
+            <p>From predictive analytics to natural language processing, AI applications are diverse and impactful. Companies are deploying AI-powered tools and systems to optimize operations, increase productivity, and gain competitive advantages.</p>
+            <p>As AI continues to evolve, its integration into business processes will become more widespread. To stay ahead in the rapidly changing landscape, businesses must embrace AI technologies, invest in talent, and adapt their strategies accordingly.</p>
+        </div>
+        <div class="article-meta">
+            <div class="article-author">By: John Doe</div>
+            <div class="article-timestamp">Published on: February 22, 2024</div>
+        </div>
+
+        <!-- Comments section -->
+        <div class="comments-container">
+            <h2>Comments</h2>
+            <div class="comment">
+                <div class="comment-author">Alice</div>
+                <div class="comment-body">Great article!</div>
+                <div class="comment-actions">
+                    <button class="like-btn">Like</button>
+                    <button class="comment-btn">Reply</button>
+                </div>
+            </div>
+            <div class="comment">
+                <div class="comment-author">Bob</div>
+                <div class="comment-body">Very insightful!</div>
+                <div class="comment-actions">
+                    <button class="like-btn">Like</button>
+                    <button class="comment-btn">Reply</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add comment form -->
+        <form id="add-comment-form">
+            <h3>Add a Comment</h3>
+            <div>
+                <label for="comment-author">Your Name:</label>
+                <input type="text" id="comment-author" name="comment-author" required>
+            </div>
+            <div>
+                <label for="comment-body">Your Comment:</label>
+                <textarea id="comment-body" name="comment-body" rows="4" required></textarea>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('add-comment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Handle comment submission here
+        });
+    </script>
+</body>
+</html>

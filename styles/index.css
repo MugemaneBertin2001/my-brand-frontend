@@ -1,16 +1,22 @@
 /* Global styles */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   padding: 0;
   margin: 0;
   background-color: #f0f0f6;
   font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
 }
 
 body main {
   display: flex;
 }
 .main-content{
-  margin: 0 1rem;
+  margin:0 6rem;
+
 }
 
 /* Profile card */
@@ -50,11 +56,12 @@ body main {
   margin-top: 5px;
 }
 
-.social-media-div img {
-  width: 30px;
-  height: 30px;
+.social-media-div a {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   margin: auto;
+  color: #FFA000;
 }
 
 .identity-rows div {
@@ -332,6 +339,13 @@ body main {
   .testimonial {
     width: 100%;
   }
+  .main-content{
+   margin-left: auto;
+   padding-right: auto;
+   
+  
+  }
+  
 
   body main div .hero-banner,
   .services-set {

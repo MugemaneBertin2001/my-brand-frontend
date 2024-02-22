@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home: my brand</title>
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar-left" id="sidebarLeft">
+            <div class="navbar">
+                <div>
+                    <h1>
+                        John Doe
+                    </h1>
+                </div>
+                <ul>
+                    <li ><a href="./index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="./articles.html"><i class="fas fa-newspaper"></i> Articles</a></li>
+                    <li id="active"><a href="./messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
+                    <li><a href="./users.html"><i class="fas fa-user"></i> Users</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <div class="top-heading">
+                <div class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-window-close"></i>
+                </div>
+                <div class="user-logo">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <div class="main message-portion">
+                <div class="card banner">
+                    <h2>Messages</h2>
+                </div>
+                <div class="message-cards">
+                    <!-- First Message Card -->
+                    <div class="message-card">
+                        <div class="sender-info">
+                            <div class="sender-name">John Doe</div>
+                            <div class="sender-email">john@example.com</div>
+                        </div>
+                        <div class="message-info">
+                            <div class="message-subject">Regarding Project Update</div>
+                            <div class="message-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget elit ac tellus venenatis accumsan.</p>
+                            </div>
+                            <div class="message-timestamp">2024-02-22 10:30 AM</div>
+                        </div>
+                        <div class="meta">
+                            <button class="respond-btn">Respond</button>
+                        </div>
+                    </div>
+            
+                    <!-- Second Message Card -->
+                    <div class="message-card">
+                        <div class="sender-info">
+                            <div class="sender-name">Jane Smith</div>
+                            <div class="sender-email">jane@example.com</div>
+                        </div>
+                        <div class="message-info">
+                            <div class="message-subject">Urgent: Meeting Rescheduled</div>
+                            <div class="message-body">
+                                <p>Hello, the meeting scheduled for tomorrow has been rescheduled to next week. Please make a note of it.</p>
+                            </div>
+                            <div class="message-timestamp">2024-02-23 09:15 AM</div>
+                        </div>
+                        <div class="meta">
+                            <button class="respond-btn">Respond</button>
+                        </div>
+                    </div>
+            
+                    <!-- Third Message Card -->
+                    <div class="message-card">
+                        <div class="sender-info">
+                            <div class="sender-name">David Brown</div>
+                            <div class="sender-email">david@example.com</div>
+                        </div>
+                        <div class="message-info">
+                            <div class="message-subject">Query Regarding Invoice</div>
+                            <div class="message-body">
+                                <p>Hi, I have a question about the invoice we received last month. Can you provide some clarification?</p>
+                            </div>
+                            <div class="message-timestamp">2024-02-24 02:45 PM</div>
+                        </div>
+                        <div class="meta">
+                            <button class="respond-btn">Respond</button>
+                        </div>
+                    </div>
+            
+                    <!-- Fourth Message Card -->
+                    <div class="message-card">
+                        <div class="sender-info">
+                            <div class="sender-name">Emily Johnson</div>
+                            <div class="sender-email">emily@example.com</div>
+                        </div>
+                        <div class="message-info">
+                            <div class="message-subject">Feedback on Product Launch</div>
+                            <div class="message-body">
+                                <p>Hey there, just wanted to provide some feedback on the recent product launch. Overall, it was great!</p>
+                            </div>
+                            <div class="message-timestamp">2024-02-25 04:20 PM</div>
+                        </div>
+                        <div class="meta">
+                            <button class="respond-btn">Respond</button>
+                        </div>
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+    <script src="../behavoir/dashboard.js"></script>
+</body>
+</html>

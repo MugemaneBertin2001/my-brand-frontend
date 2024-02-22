@@ -339,6 +339,13 @@ body main {
   .testimonial {
     width: 100%;
   }
+  .main-content{
+   margin-left: auto;
+   padding-right: auto;
+   
+  
+  }
+  
 
   body main div .hero-banner,
   .services-set {

@@ -332,3 +332,233 @@ body, html {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+.blog-card .meta .delete-btn,
+.blog-card .meta .edit-btn {
+    background-color: #ff4d4d; 
+    color: white;  
+    border: none;  
+    padding: 8px 16px;  
+    margin-right: 10px; 
+    cursor: pointer;  
+}
+
+.blog-card .meta .edit-btn {
+    background-color: #4da6ff;  
+}
+
+.blog-card .meta .delete-btn:hover,
+.blog-card .meta .edit-btn:hover {
+    opacity: 0.8;  
+}
+.message-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.sender-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.sender-name,
+.sender-email {
+    font-weight: bold;
+}
+
+.message-subject {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.message-body {
+    margin-bottom: 10px;
+}
+
+.message-timestamp {
+    color: #888;
+}
+
+.meta {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.respond-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .message-card {
+        padding: 15px;
+    }
+
+    .meta {
+        justify-content: center;
+    }
+}
+
+.message-portion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.article-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.article-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.article-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.article-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.article-content {
+    line-height: 1.6;
+    color: #555;
+}
+
+.article-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    color: #888;
+}
+
+.article-author {
+    font-style: italic;
+}
+
+/* Comments section styles */
+.comments-container {
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.comment {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.comment-author {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.comment-body {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+}
+
+.like-btn,
+.comment-btn {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.like-btn:hover,
+.comment-btn:hover {
+    text-decoration: underline;
+}
+
+/* Add comment form styles */
+#add-comment-form {
+    margin-top: 40px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#add-comment-form h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#add-comment-form label {
+    font-weight: bold;
+    color: #333;
+}
+
+#add-comment-form input[type="text"],
+#add-comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#add-comment-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#add-comment-form button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-comment-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.back-link {
+    display: block;
+    text-decoration: none;
+    color: #4A63E7;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

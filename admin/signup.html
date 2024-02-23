@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sign up Page</title>
+    <title>Sign Up Page</title>
     <link rel="stylesheet" href="../styles/admin.css">
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="main">
@@ -14,55 +19,38 @@
             </div>
         </div>
         <div class="right">
-            <form action="">
-                <h1>
-                    Sig up
-                </h1>
+            <form id="signupForm" action="#">
+                <h1>Sign up</h1>
                 <div>
-                    <p>
-                        Full Name
-                    </p>
-                    <p>
-                        <input type="text">
-                    </p>
-                    
+                    <p>Full Name</p>
+                    <p><input type="text" id="fullName"></p>
+                    <span id="fullNameError" class="error-message"></span>
                 </div>
                 <div>
-                    <p>
-                        Email
-                    </p>
-                    <p>
-                        <input type="text">
-                    </p>
-                    
+                    <p>Email</p>
+                    <p><input type="text" id="email"></p>
+                    <span id="emailError" class="error-message"></span>
                 </div>
                 <div>
-                    <p>
-                        Password
-                    </p>
-                    <p>
-                        <input type="password">
-                    </p>
+                    <p>Password</p>
+                    <p><input type="password" id="password"></p>
+                    <span id="passwordError" class="error-message"></span>
                 </div>
                 <div>
-                    <p>
-                        Confirm Password
-                    </p>
-                    <p>
-                        <input type="password">
-                    </p>
+                    <p>Confirm Password</p>
+                    <p><input type="password" id="confirmPassword"></p>
+                    <span id="confirmPasswordError" class="error-message"></span>
                 </div>
                 <div>
-                    <p>
-                        <button type="submit">Sign up</button>
-                    </p>
+                    <p><button type="submit">Sign up</button></p>
                 </div>
                 <div>
                     <p class="signup-link">Have an Account? <a href="./login.html">Log in</a></p>
                 </div>
             </form>
-
         </div>
     </div>
+
+    <script src="../behavoir/signup.js"></script>
 </body>
 </html>

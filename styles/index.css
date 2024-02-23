@@ -961,7 +961,6 @@ iframe{
   right: 0;
   top: 0;
   overflow-x: hidden;
-  padding-top: 20px;
 }
 
 .navbar ul {
@@ -990,4 +989,21 @@ iframe{
 /* Icon styles */
 .navbar a i {
   margin: 0 auto;
+}
+
+.small{
+  height: fit-content;
+  padding: 0;
+  width: fit-content;
+}
+.small button{
+  width: 100%;
+  padding: 10px;
+}
+.invalid {
+  border: 1px solid red;
+}
+
+.error-label {
+  color: red;
 }

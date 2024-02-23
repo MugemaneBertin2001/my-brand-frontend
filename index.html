@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/index.css">
+    <script src="./behavoir/index.js"></script> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Home: my brand</title>
 </head>
@@ -11,7 +12,7 @@
     <main>
         <div class="profile-card">
             <div class="image-div">
-                    <img  src="./images/profile.jpg" alt="" srcset=""> 
+                    <img  src="./images/hero-image.png" alt="" srcset=""> 
             </div>
             <div>
                 <h1>Mugemane Bertin</h1>
@@ -379,7 +380,7 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
                             </div>
                             <div class="meta">
-                                <a href="#">Read more</a>
+                                <a href="./dashboard/article.html">Read more</a>
                                 <div class="comments-likes">
                                     <span>10 Comments</span>
                                     <span>20 Likes</span>
@@ -395,7 +396,7 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
                             </div>
                             <div class="meta">
-                                <a href="#">Read more</a>
+                                <a href="./dashboard/article.html">Read more</a>
                                 <div class="comments-likes">
                                     <span>15 Comments</span>
                                     <span>25 Likes</span>
@@ -411,7 +412,7 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
                             </div>
                             <div class="meta">
-                                <a href="#">Read more</a>
+                                <a href="./dashboard/article.html">Read more</a>
                                 <div class="comments-likes">
                                     <span>20 Comments</span>
                                     <span>30 Likes</span>
@@ -427,7 +428,7 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
                             </div>
                             <div class="meta">
-                                <a href="#">Read more</a>
+                                <a href="./dashboard/article.html">Read more</a>
                                 <div class="comments-likes">
                                     <span>25 Comments</span>
                                     <span>35 Likes</span>
@@ -443,7 +444,7 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
                             </div>
                             <div class="meta">
-                                <a href="#">Read more</a>
+                                <a href="./dashboard/article.html">Read more</a>
                                 <div class="comments-likes">
                                     <span>30 Comments</span>
                                     <span>40 Likes</span>
@@ -461,11 +462,11 @@
                         <form id="contact-form" method="post" action="#">
                             <div class="form-group">
                                 <label for="full-name">Full Name (required)</label>
-                                <input type="text" id="full-name" name="full-name" required>
+                                <input type="text" id="full-name" name="full-name" >
                             </div>
                             <div class="form-group">
                                 <label for="email">Your Email (required)</label>
-                                <input type="email" id="email" name="email" required>
+                                <input type="email" id="email" name="email" >
                             </div>
                             <div class="form-group">
                                 <label for="subject">Subject</label>
@@ -477,6 +478,9 @@
                             </div>
                             <button type="submit">Submit</button>
                         </form>
+                        <label id="error-label" class="error-label"></label>
+                        
+                        
                     </div>
                 </div>
                 <div class="contact-i-container">
@@ -518,8 +522,12 @@
                 </div>
             </div>
         </div>
-        <div class="navbar">
-            <ul>
+        <div class="navbar small">
+            <button id="openButton" onclick="openMenu()"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="navbar" id="navbar">
+            <button id="closeButton" onclick="closeMenu()"><i class="fas fa-times"></i></button>
+            <ul class="menu">
                 <li><a href="#home"><i class="fas fa-home"></i> </a></li>
                 <li><a href="#services"><i class="fas fa-cogs"></i></a></li>
                 <li><a href="#recommendation"><i class="fas fa-thumbs-up"></i></a></li>
@@ -529,8 +537,10 @@
                 <li><a href="#blog"><i class="fas fa-blog"></i></a></li>
                 <li><a href="./admin/login.html"><i class="fas fa-user"></i></a></li> 
             </ul>
-        </div>  
+        </div>
+        
+        
     </main>
-    
+ 
 </body>
 </html>

@@ -24,7 +24,7 @@
 .main .right form {
     background-color: #ffffff;
     border-radius: 20px;
-    margin:8rem auto;
+    margin:4rem auto;
     width: 50%;  
     padding: 3rem 2rem;
 }
@@ -102,9 +102,10 @@ button[type="submit"]:hover {
     margin-top: 10px;
 }
 
-@media screen and (max-width: 1240px) {
+@media screen and (max-width: 960px) {
     .main {
-        flex-direction: column;  
+        flex-direction: column; 
+        height: auto; 
     }
 
     .main div {
@@ -116,9 +117,12 @@ button[type="submit"]:hover {
     }
 
     .main .right {
-        height: 100vh;  
+        height: auto;  
     }
     .main .right form{
         width: 50%;
     }
+}
+.error-message {
+    color: red;
 }

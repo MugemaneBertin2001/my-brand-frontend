@@ -6,6 +6,8 @@
     <title>Home: my brand</title>
     <link rel="stylesheet" href="../styles/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/marcellov7/tex@main/src/tex.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/marcellov7/tex@main/src/tex.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -48,117 +50,29 @@
                 <form id="newBlogForm">
                     <div class="form-group">
                         <label for="title">Title:</label>
-                        <input type="text" id="title" name="title" >
+                        <input type="text" id="title" name="title">
+                        <div id="titleError" class="error-message"></div> <!-- Error container for title -->
                     </div>
                     <div class="form-group">
                         <label for="image">Image URL:</label>
-                        <input type="text" id="image" name="image" >
+                        <input type="file" id="image" name="image">
+                        <div id="imageError" class="error-message"></div> <!-- Error container for image -->
                     </div>
                     <div class="form-group">
                         <label for="content">Content:</label>
                         <textarea id="content" name="content" rows="5"></textarea>
+                        <div id="contentError" class="error-message"></div> <!-- Error container for content -->
                     </div>
-                    <div id="error-message" class="error-message"></div>
                     <button type="submit">Submit</button>
                 </form>
             </div>
         </div>
-        <div class="blog-container">
-            <!-- Article 1 -->
-            <div class="blog-card">
-                <img src="../images/blogs/artificial-intelligence.jpg" alt="Blog 1 Image">
-                <div class="blog-info">
-                    <h3>The Rise of Artificial Intelligence in Business</h3>
-                    <div class="content-body">
-                        <p>Artificial Intelligence (AI) is revolutionizing various industries, including business. Learn how AI is transforming...</p>
-                    </div>
-                    <div class="meta">
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                        <div class="comments-likes">
-                            <span><i class="fas fa-comment"></i> 15 Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> 30 Likes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 2 -->
-            <div class="blog-card">
-                <img src="../images/blogs/cyber-security.jpeg" alt="Blog 2 Image">
-                <div class="blog-info">
-                    <h3>Cybersecurity Best Practices for Remote Work</h3>
-                    <div class="content-body">
-                        <p>With the rise of remote work, cybersecurity has become more critical than ever. Discover best practices to keep your...</p>
-                    </div>
-                    <div class="meta">
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                        <div class="comments-likes">
-                            <span><i class="fas fa-comment"></i> 20 Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> 25 Likes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 3 -->
-            <div class="blog-card">
-                <img src="../images/blogs/Blockchain1.jpg" alt="Blog 3 Image">
-                <div class="blog-info">
-                    <h3>The Future of Blockchain Technology</h3>
-                    <div class="content-body">
-                        <p>Blockchain technology holds immense potential for revolutionizing various sectors. Explore its future implications...</p>
-                    </div>
-                    <div class="meta">
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                        <div class="comments-likes">
-                            <span><i class="fas fa-comment"></i> 12 Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> 40 Likes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 4 -->
-            <div class="blog-card">
-                <img src="../images/blogs/Data-Privacy.jpg" alt="Blog 4 Image">
-                <div class="blog-info">
-                    <h3>The Importance of Data Privacy in the Digital Age</h3>
-                    <div class="content-body">
-                        <p>Data privacy concerns have escalated in the digital age. Learn why safeguarding personal data is crucial...</p>
-                    </div>
-                    <div class="meta">
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                        <div class="comments-likes">
-                            <span><i class="fas fa-comment"></i> 18 Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> 35 Likes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 5 -->
-            <div class="blog-card">
-                <img src="../images/blogs/devops.jpg" alt="Blog 5 Image">
-                <div class="blog-info">
-                    <h3>The Evolving Role of DevOps in Software Development</h3>
-                    <div class="content-body">
-                        <p>DevOps practices are reshaping the software development landscape. Explore the evolving role of DevOps...</p>
-                    </div>
-                    <div class="meta">
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                        <div class="comments-likes">
-                            <span><i class="fas fa-comment"></i> 22 Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> 28 Likes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="blog-container" id="blog-container">
+             <!-- articles goes here -->
         </div>
         
-</div>
-
-            
+</div>            
         </div>
     </div>
     <script src="../behavoir/dashboard.js"></script>

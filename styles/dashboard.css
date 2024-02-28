@@ -646,3 +646,19 @@ button[type="submit"]:hover {
     background-color: #FFB400;
     
 }
+
+.delete-btn {
+    background-color: #f44336; /* Red background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 8px 16px; /* Padding */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition on hover */
+    margin: 0 3rem;
+}
+
+.delete-btn:hover {
+    background-color: #cc0000; /* Darker red background color on hover */
+}

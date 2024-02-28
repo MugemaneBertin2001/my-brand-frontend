@@ -23,10 +23,23 @@ function validateForm(event) {
     if (password === "") {
         showError("passwordError", "Please enter your password.");
     }
+    else{
+        var users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // If no errors, submit the form
-    if (!emailError && !passwordError) {
-        document.getElementById("loginForm").submit();
+        // Find user by email
+        var user = users.find(function(user) {
+        return user.email === email;
+        });
+
+        // If user not found or password is incorrect, show error
+        if (!user || user.password !== password) {
+            showError("loginError", "Invalid email or password.");
+            return;
+        }
+
+        // If no errors, redirect to dashboard (replace "dashboard.html" with actual dashboard URL)
+        sessionStorage.setItem('userEmail', email);
+        window.location.href = "/dashboard";
     }
 }
 

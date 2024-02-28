@@ -139,7 +139,7 @@
                         My services
                     </h1>
                     <p>
-                        My services specifically focusses on integration of cutting-edge technologies in various business sectors 
+                        My services specifically focuss on integration of cutting-edge technologies in various business sectors 
                     </p>
                 </div>
                 <div class="services-set">
@@ -371,87 +371,8 @@
             <div class="blog-section" id="blog">
                 <h1>Blogs</h1>
                 <p>Posts from site owner</p>
-                <div class="blog-cards">
-                    <div class="blog-card">
-                        <img src="./images/blog.jpg" alt="Blog 1 Image">
-                        <div class="blog-info">
-                            <h3>Blog 1 Title</h3>
-                            <div class="content-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
-                            </div>
-                            <div class="meta">
-                                <a href="./dashboard/article.html">Read more</a>
-                                <div class="comments-likes">
-                                    <span>10 Comments</span>
-                                    <span>20 Likes</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <img src="./images/blog.jpg" alt="Blog 2 Image">
-                        <div class="blog-info">
-                            <h3>Blog 2 Title</h3>
-                            <div class="content-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
-                            </div>
-                            <div class="meta">
-                                <a href="./dashboard/article.html">Read more</a>
-                                <div class="comments-likes">
-                                    <span>15 Comments</span>
-                                    <span>25 Likes</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <img src="./images/blog.jpg" alt="Blog 3 Image">
-                        <div class="blog-info">
-                            <h3>Blog 3 Title</h3>
-                            <div class="content-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
-                            </div>
-                            <div class="meta">
-                                <a href="./dashboard/article.html">Read more</a>
-                                <div class="comments-likes">
-                                    <span>20 Comments</span>
-                                    <span>30 Likes</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <img src="./images/blog.jpg" alt="Blog 4 Image">
-                        <div class="blog-info">
-                            <h3>Blog 4 Title</h3>
-                            <div class="content-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
-                            </div>
-                            <div class="meta">
-                                <a href="./dashboard/article.html">Read more</a>
-                                <div class="comments-likes">
-                                    <span>25 Comments</span>
-                                    <span>35 Likes</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog-card">
-                        <img src="./images/blog.jpg" alt="Blog 5 Image">
-                        <div class="blog-info">
-                            <h3>Blog 5 Title</h3>
-                            <div class="content-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at consequat ligula. Fusce non pretium justo. Nullam volutpat magna ac orci efficitur, sit amet ullamcorper felis suscipit.</p>
-                            </div>
-                            <div class="meta">
-                                <a href="./dashboard/article.html">Read more</a>
-                                <div class="comments-likes">
-                                    <span>30 Comments</span>
-                                    <span>40 Likes</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="blog-cards" id="blogCardsContainer">
+                  
                 </div>
             </div>
             <div class="great-container">
@@ -459,30 +380,33 @@
                     <h1>Leave us your info</h1>
                     <div class="form-container">
                         <!-- Contact form -->
-                        <form id="contact-form" method="post" action="#">
+                        <form id="contact-form" method="post">
                             <div class="form-group">
                                 <label for="full-name">Full Name (required)</label>
-                                <input type="text" id="full-name" name="full-name" >
+                                <input type="text" id="full-name" name="full-name">
+                                <span id="full-name-error" class="error-label "></span> <!-- Error message for full name -->
                             </div>
                             <div class="form-group">
                                 <label for="email">Your Email (required)</label>
-                                <input type="email" id="email" name="email" >
+                                <input type="email" id="email" name="email">
+                                <span id="email-error" class="error-label "></span> <!-- Error message for email -->
                             </div>
                             <div class="form-group">
                                 <label for="subject">Subject</label>
                                 <input type="text" id="subject" name="subject">
+                                <span id="subject-error" class="error-label "></span> <!-- Error message for subject -->
                             </div>
                             <div class="form-group">
                                 <label for="message">Your Message</label>
                                 <textarea id="message" name="message" rows="5"></textarea>
+                                <span id="message-error" class="error-label "></span> <!-- Error message for message -->
                             </div>
                             <button type="submit">Submit</button>
                         </form>
-                        <label id="error-label" class="error-label"></label>
-                        
-                        
+                        <label id="error-label" class="error-label "></label>
                     </div>
                 </div>
+                
                 <div class="contact-i-container">
                     <h1>Contact Info</h1>
                     <div class="contact-info-section">

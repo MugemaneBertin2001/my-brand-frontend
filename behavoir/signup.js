@@ -40,11 +40,24 @@ function validateForm(event) {
     } else if (confirmPassword !== password) {
         showError("confirmPasswordError", "Passwords do not match.");
     }
+    else{
+        var users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // If no errors, submit the form
-    if (!fullNameError && !emailError && !passwordError && !confirmPasswordError) {
-        document.getElementById("signupForm").submit();
+        // Add new user data to the array
+        var newUser = { fullName: fullName, email: email, password: password };
+        users.push(newUser);
+
+        // Save updated user data back to localStorage
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // Redirect to the login page
+        window.location.href = "login.html";
+
     }
+
+    
+       
+   
 }
 
 function showError(id, message) {

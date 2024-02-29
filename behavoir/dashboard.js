@@ -111,16 +111,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function articlePopulation() {
         const blogContainer = document.querySelector('#blog-container');
         blogContainer.innerHTML = ''; // Clear the previous content
-
+    
         // Retrieve articles from local storage
-        const articles = JSON.parse(localStorage.getItem('articles')) || [];
-
+        let articles = JSON.parse(localStorage.getItem('articles')) || [];
+    
         // Populate blog container with articles
-        articles.forEach(article => {
+        articles.forEach((article, index) => { // Add index parameter to keep track of article index
             // Create a new blog card element
             const blogCard = document.createElement('div');
             blogCard.classList.add('blog-card');
-
+    
             // Set HTML content for the blog card
             blogCard.innerHTML = `
                 <img src="${article.image}" alt="Blog Image">
@@ -139,13 +139,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
+    
             // Append the blog card to the blog container
             blogContainer.appendChild(blogCard);
-
-            
+    
+            // Add event listener to delete button
+            const deleteBtn = blogCard.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', () => {
+                // Remove the article from the articles array
+                articles.splice(index, 1);
+    
+                // Update local storage with the modified articles array
+                localStorage.setItem('articles', JSON.stringify(articles));
+    
+                // Re-populate the blog container to reflect the changes
+                articlePopulation();
+            });
         });
     }
+    
  
+
 
     function editCapability(blogCard, article) {
         const editBtn = blogCard.querySelector('.edit-btn');
@@ -158,4 +172,66 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const messageCardsContainer = document.querySelector('.message-cards');
+
+    // Retrieve messages from local storage
+    let messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+
+    // Function to render message cards
+    function renderMessageCards() {
+        // Clear existing message cards
+        messageCardsContainer.innerHTML = '';
+
+        // Iterate over messages and populate message cards container
+        messages.forEach((message, index) => {
+            // Create a new message card element
+            const messageCard = document.createElement('div');
+            messageCard.classList.add('message-card');
+
+            // Set HTML content for the message card
+            messageCard.innerHTML = `
+                <div class="sender-info">
+                    <div class="sender-name">${message.fullName}</div>
+                </div>
+                <div class="message-info">
+                    <div class="message-subject">${message.subject}</div>
+                    <div class="message-body">
+                        <p>${message.message}</p>
+                    </div> 
+                    </div>
+                    <div class="meta">
+                    <div class="message-timestamp">${message.timestamp}</div>
+                    <button class="respond-btn">Respond</button>
+                    <button class="delete-btn" data-index="${index}">Delete</button>
+                    <div>
+                </div>
+            `;
+
+            // Append the message card to the message cards container
+            messageCardsContainer.appendChild(messageCard);
+        });
+
+        // Add event listeners for delete buttons
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(deleteBtn => {
+            deleteBtn.addEventListener('click', () => {
+                // Get the index of the message to delete
+                const index = parseInt(deleteBtn.getAttribute('data-index'));
+
+                // Remove the message from the messages array
+                messages.splice(index, 1);
+
+                // Update local storage with the modified messages array
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+
+                // Reload the page to reflect the changes
+                location.reload();
+            });
+        });
+    }
+
+    // Render initial message cards
+    renderMessageCards();
 });

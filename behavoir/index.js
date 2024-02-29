@@ -103,7 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
             fullName: fullNameInput.value.trim(),
             email: emailInput.value.trim(),
             subject: subjectInput.value.trim(),
-            message: messageInput.value.trim()
+            message: messageInput.value.trim(),
+            timestamp: new Date().toLocaleString(),
         };
 
         // Retrieve existing messages from local storage

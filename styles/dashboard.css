@@ -405,6 +405,7 @@ body, html {
 
     .meta {
         justify-content: center;
+        
     }
 }
 
@@ -661,4 +662,8 @@ button[type="submit"]:hover {
 
 .delete-btn:hover {
     background-color: #cc0000; /* Darker red background color on hover */
+}
+
+.meta{
+    gap: 20px;
 }

@@ -15,7 +15,7 @@ function toggleSidebar() {
 }
 document.addEventListener('DOMContentLoaded', function() {
 
-    if (!sessionStorage.getItem("userEmail")) {
+    if(!sessionStorage.getItem("userEmail")){
         window.location.href = "/admin/login.html"
     }
 
@@ -155,24 +155,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Re-populate the blog container to reflect the changes
                 articlePopulation();
             });
+            // Add event listener to delete button
+            const editBtn = blogCard.querySelector('.edit-btn');
+            editBtn.addEventListener('click', () => {
+                
+                renderEditModal(articles[index])
+
+            });
+            
         });
     }
-    
- 
-
-
-    function editCapability(blogCard, article) {
-        const editBtn = blogCard.querySelector('.edit-btn');
-        editBtn.addEventListener('click', () => {
-            // Display the edit modal or form pre-filled with the article's information
-            // Allow the user to edit the article and update it in the local storage
-            // Update the DOM to reflect the changes
-            // You can implement this part based on your specific requirements
-            console.log('Edit button clicked for article:', article);
-        });
-    }
-
 });
+function renderEditModal(article) {
+    // Select the modal content
+    var modal = document.getElementById("myModal-edit");
+    var closeBtn = document.getElementById("close-edit");
+       // Close modal
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    };
+    modal.style.display = "block";
+    // Populate the form fields with existing article information
+    const titleInput = document.getElementById('title-edit');
+    const contentInput = document.getElementById('content-edit');
+    const imageInput = document.getElementById('image-edit');
+
+    titleInput.value = article.title;
+    contentInput.value = article.content;
+    imageInput.value = article.image
+
+    // Show the modal
+    modalContent.style.display = 'block';
+}
 document.addEventListener('DOMContentLoaded', function() {
     const messageCardsContainer = document.querySelector('.message-cards');
 
@@ -235,3 +249,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render initial message cards
     renderMessageCards();
 });
+
+

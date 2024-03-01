@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var blogCardsContainer = document.getElementById('blogCardsContainer');
 
     // Iterate through saved articles and display them
-    articles.forEach(article => {
+    articles.forEach((article, index) => {
         // Create HTML structure for each article
         var blogCard = document.createElement('div');
         blogCard.classList.add('blog-card');
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>${article.content}</p>
                 </div>
                 <div class="meta">
-                    <a href="./dashboard/article.html">Read more</a>
+                    <a href="./dashboard/article.html?articleId=${index}">Read more</a>
                     <div class="comments-likes">
                         <span>${article.comments.length} Comments</span>
                         <span>${article.likes} Likes</span>

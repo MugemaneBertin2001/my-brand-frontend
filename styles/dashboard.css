@@ -540,7 +540,7 @@ body {
     min-height: 100px;
 }
 
-#add-comment-form button[type="submit"] {
+#add-comment-form #comment-button {
     background-color: #007bff;
     color: #fff;
     border: none;

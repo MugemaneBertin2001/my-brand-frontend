@@ -43,7 +43,7 @@
         <div class="new-blog">
             <button id="addBlogBtn">Add New Blog</button>
         </div>
-        
+        <!-- creating modal -->
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -67,6 +67,31 @@
                 </form>
             </div>
         </div>
+        <!-- editting modal -->
+        <div id="myModal-edit" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-edit">&times;</span>
+                <form id="newBlogForm">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title-edit" name="title">
+                        <div id="titleError" class="error-message"></div> <!-- Error container for title -->
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image URL:</label>
+                        <input type="file" id="image-edit" name="image">
+                        <div id="imageError" class="error-message"></div> <!-- Error container for image -->
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content:</label>
+                        <textarea id="content-edit" name="content" rows="5"></textarea>
+                        <div id="contentError" class="error-message"></div> <!-- Error container for content -->
+                    </div>
+                    <button type="submit">Save change</button>
+                </form>
+            </div>
+        </div>
+        
         
         <div class="blog-container" id="blog-container">
              <!-- articles goes here -->

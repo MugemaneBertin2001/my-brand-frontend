@@ -1,6 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', function(){
     document.getElementById("signupForm").addEventListener("submit", validateForm);
+    if (sessionStorage.getItem("role")==='admin') {
+        window.location.href = "/dashboard"
+    }else if( sessionStorage.getItem('role')==="user"){
+        window.location.href = "/"
+    }else{
+        
+        window.location.href = "/admin/login.html"
+    }
 });
 
 function validateForm(event) {
@@ -44,7 +52,12 @@ function validateForm(event) {
         var users = JSON.parse(localStorage.getItem("users")) || [];
 
         // Add new user data to the array
-        var newUser = { fullName: fullName, email: email, password: password };
+        var newUser = { 
+            fullName: fullName, 
+            email: email, 
+            password: password ,
+            role : 'user'
+        };
         users.push(newUser);
 
         // Save updated user data back to localStorage

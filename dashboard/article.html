@@ -7,6 +7,185 @@
     <link rel="stylesheet" href="../styles/dashboard.css">
  
 </head>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Get the query parameters from the URL
+    const queryParams = new URLSearchParams(window.location.search);
+
+    // Get the value of the "articleId" parameter
+    const articleId = queryParams.get('articleId');
+
+    // Retrieve the article from localStorage using the articleId
+    const articles = JSON.parse(localStorage.getItem('articles')) || [];
+    const article = articles[articleId];
+
+    // Select the article header
+    const articleHeader = document.querySelector('.article-header');
+
+    // Populate the article header with data
+    const articleImage = articleHeader.querySelector('.article-image');
+    articleImage.src = article.image;
+    articleImage.alt = 'Article Image';
+
+    const articleTitle = articleHeader.querySelector('.article-title');
+    articleTitle.textContent = article.title;
+
+    // Select the article content
+    const articleContent = document.querySelector('.article-content');
+
+    articleContent.innerHTML = article.content
+
+    // Select the article meta
+    const articleMeta = document.querySelector('.article-meta');
+
+// Select the comments container
+const commentsContainer = document.querySelector('.comments-container');
+const commentsInd = commentsContainer.querySelector('h2');
+commentsInd.innerHTML= `${article.comments.length} ${commentsInd.innerHTML}`
+
+// Check if there are comments for the article
+if (article.comments && article.comments.length > 0) {
+    
+    // Populate the comments container with comments
+    article.comments.forEach(comment => {
+        // Create a comment element
+        const commentElement = document.createElement('div');
+        commentElement.classList.add('comment');
+
+        // Create the comment author
+        const commentAuthor = document.createElement('div');
+        commentAuthor.classList.add('comment-author');
+        commentAuthor.textContent = comment.author;
+
+        // Create the comment body
+        const commentBody = document.createElement('div');
+        commentBody.classList.add('comment-body');
+        commentBody.textContent = comment.body;
+
+        // Create the comment actions
+        const commentActions = document.createElement('div');
+        commentActions.classList.add('comment-actions');
+
+        // Create the like button
+        const likeButton = document.createElement('button');
+        likeButton.classList.add('like-btn');
+        likeButton.textContent = 'Like';
+
+        // // Create the reply button
+        // const replyButton = document.createElement('button');
+        // replyButton.classList.add('comment-btn');
+        // replyButton.textContent = 'Reply';
+
+        // // Append the like and reply buttons to the comment actions
+        // commentActions.appendChild(likeButton);
+        // commentActions.appendChild(replyButton);
+
+        // Append the comment author, body, and actions to the comment element
+        commentElement.appendChild(commentAuthor);
+        commentElement.appendChild(commentBody);
+        commentElement.appendChild(commentActions);
+
+        // Append the comment element to the comments container
+        commentsContainer.appendChild(commentElement);
+    });
+} else {
+    // If there are no comments, display a message
+    const noCommentsMessage = document.createElement('div');
+    noCommentsMessage.textContent = 'No comments available.';
+    commentsContainer.appendChild(noCommentsMessage);
+}
+
+const likeButton = document.querySelector('#like-button');
+likeButton.innerHTML = article.likes
+likeButton.innerHTML += (article.likes>1? "  likes":"  like")
+likeButton.addEventListener('click', function(){
+     // Get the article ID from the URL query parameters
+     const queryParams = new URLSearchParams(window.location.search);
+        const articleId = queryParams.get('articleId');
+
+        // Retrieve the article from local storage
+        const articles = JSON.parse(localStorage.getItem('articles')) || [];
+        const article = articles[articleId];
+
+        // Add the comment to the article's comments array
+        article.likes+=1;
+
+        // Update the article in the articles array
+        articles[articleId] = article;
+
+        // Save the updated articles array back to local storage
+        localStorage.setItem('articles', JSON.stringify(articles));
+
+        window.location.reload();
+        
+    
+})
+
+});
+
+function handleComment() {
+    const commentForm = document.getElementById('add-comment-form');
+    commentForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get the values from the form inputs
+        const authorInput = document.getElementById('comment-author');
+        const bodyInput = document.getElementById('comment-body');
+        const author = authorInput.value.trim();
+        const body = bodyInput.value.trim();
+
+        // Select the error message spans
+        const authorError = document.getElementById('author-error');
+        const bodyError = document.getElementById('body-error');
+
+        // Reset error messages
+        authorError.innerHTML = '';
+        bodyError.innerHTML = '';
+
+        // Validate input fields
+        if (!author) {
+            authorError.innerHTML = "Name is required";
+            
+        }
+        if (!body) {
+            bodyError.innerHTML = "Comment is required";
+            return;
+        }
+
+        // Get the article ID from the URL query parameters
+        const queryParams = new URLSearchParams(window.location.search);
+        const articleId = queryParams.get('articleId');
+
+        // Retrieve the article from local storage
+        const articles = JSON.parse(localStorage.getItem('articles')) || [];
+        const article = articles[articleId];
+
+        // Create the comment object
+        const comment = {
+            author: author,
+            body: body,
+            timestamp: new Date().toLocaleString()
+        };
+
+        // Add the comment to the article's comments array
+        article.comments.push(comment);
+
+        // Update the article in the articles array
+        articles[articleId] = article;
+
+        // Save the updated articles array back to local storage
+        localStorage.setItem('articles', JSON.stringify(articles));
+
+        // Reset the form inputs
+        commentForm.reset();
+        window.location.reload();
+    });
+}
+
+
+
+
+</script>
 <body>
     <div class="article-container">
         <a href="/" class="back-link">Go Back Home</a>
@@ -21,28 +200,15 @@
         </div>
         <div class="article-meta">
             <div class="article-author">By: John Doe</div>
+            <div id="like-button">
+                <button> </button>
+            </div>
             <div class="article-timestamp">Published on: February 22, 2024</div>
         </div>
 
         <!-- Comments section -->
         <div class="comments-container">
             <h2>Comments</h2>
-            <div class="comment">
-                <div class="comment-author">Alice</div>
-                <div class="comment-body">Great article!</div>
-                <div class="comment-actions">
-                    <button class="like-btn">Like</button>
-                    <button class="comment-btn">Reply</button>
-                </div>
-            </div>
-            <div class="comment">
-                <div class="comment-author">Bob</div>
-                <div class="comment-body">Very insightful!</div>
-                <div class="comment-actions">
-                    <button class="like-btn">Like</button>
-                    <button class="comment-btn">Reply</button>
-                </div>
-            </div>
         </div>
 
         <!-- Add comment form -->
@@ -50,21 +216,21 @@
             <h3>Add a Comment</h3>
             <div>
                 <label for="comment-author">Your Name:</label>
-                <input type="text" id="comment-author" name="comment-author" required>
+                <input type="text" id="comment-author" name="comment-author">
+                <span class="error-message" id="author-error"></span>
             </div>
             <div>
                 <label for="comment-body">Your Comment:</label>
-                <textarea id="comment-body" name="comment-body" rows="4" required></textarea>
+                <textarea id="comment-body" name="comment-body" rows="4"></textarea>
+                <span class="error-message" id="body-error"></span>
             </div>
-            <button type="submit">Submit</button>
+            <button onclick="handleComment()" id="comment-button">Submit</button>
         </form>
+        
+        
     </div>
 
-    <script>
-        document.getElementById('add-comment-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Handle comment submission here
-        });
-    </script>
+
 </body>
 </html>
+

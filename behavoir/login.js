@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', function(){
     document.getElementById("loginForm").addEventListener("submit", validateForm);
+    if (sessionStorage.getItem("role")==='admin') {
+        window.location.href = "/dashboard"
+    }else if( sessionStorage.getItem('role')==="user"){
+        window.location.href = "/"
+    }else{
+        
+        return;
+    }
 });
 
 function validateForm(event) {
@@ -38,8 +46,16 @@ function validateForm(event) {
         }
 
         // If no errors, redirect to dashboard (replace "dashboard.html" with actual dashboard URL)
-        sessionStorage.setItem('userEmail', email);
-        window.location.href = "/dashboard";
+        sessionStorage.setItem('userEmail', user.email);
+        sessionStorage.setItem('role', user.role);
+        if(sessionStorage.getItem('role')=== "admin"){
+            window.location.href = "/dashboard";
+            
+        }
+        else{
+            
+            window.location.href = "/";
+        }
     }
 }
 

@@ -272,27 +272,30 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const imageBase64 = event.target.result;
-            // Update article data
-            article.title = titleInput.value.trim();
-            article.image = imageBase64 || article.image; // Use existing image if no new image is selected
-            article.content = contentInput.value.trim();
-
-            localStorage.setItem('articles', JSON.stringify(articles));
-            resetForm();
-            window.location.reload();
-        };
+        // Update article data
+        article.title = titleInput.value.trim();
+        article.content = contentInput.value.trim();
 
         // Check if an image is selected
         if (imageInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imageBase64 = event.target.result;
+                article.image = imageBase64; // Update image only if a new image is selected
+                updateArticle();
+            };
             // Read the selected image file as data URL
             reader.readAsDataURL(imageInput.files[0]);
         } else {
-            // Continue without updating the image
-            reader.onload = null;
-            reader.readAsDataURL(new Blob()); // Empty blob
+            updateArticle(); // No new image selected, proceed with updating article
+        }
+
+        function updateArticle() {
+            // Update the article in the articles array
+            articles[articleIndex] = article;
+            localStorage.setItem('articles', JSON.stringify(articles));
+            resetForm();
+            window.location.reload();
         }
 
         function validateForm() {
@@ -308,23 +311,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 isValid = false;
             }
 
-            if (imageInput.files[0] && !isValidImage(imageInput.files[0])) {
-                editImageError.textContent = "Invalid image file format.";
-                isValid = false;
-            }
-
             if (contentInput.value.trim() === "") {
                 editContentError.textContent = "Content is required.";
                 isValid = false;
             }
 
             return isValid;
-        }
-
-        function isValidImage(file) {
-            const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
-            const fileExtension = file.name.split('.').pop().toLowerCase();
-            return allowedExtensions.includes(fileExtension);
         }
 
         function resetForm() {

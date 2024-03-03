@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
         window.location.href = "/"
     }else{
         
-        window.location.href = "/admin/login.html"
+        return;
     }
 });
 
@@ -48,7 +48,7 @@ function validateForm(event) {
         // If no errors, redirect to dashboard (replace "dashboard.html" with actual dashboard URL)
         sessionStorage.setItem('userEmail', user.email);
         sessionStorage.setItem('role', user.role);
-        if(sessionStorage.getItem('role')=== "role"){
+        if(sessionStorage.getItem('role')=== "admin"){
             window.location.href = "/dashboard";
             
         }

@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/marcellov7/tex@main/src/tex.min.css">
     <script src="https://cdn.jsdelivr.net/gh/marcellov7/tex@main/src/tex.min.js"></script>
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar-left" id="sidebarLeft">
@@ -72,22 +73,24 @@
             <div class="modal-content">
                 <span class="close" id="close-edit">&times;</span>
                 <form id="newBlogForm">
-                    <div class="form-group">
+                    <div class="form-group"> 
+                        <!-- holding index for article to update  -->
+                        <label id="index"> </label> 
                         <label for="title">Title:</label>
                         <input type="text" id="title-edit" name="title">
-                        <div id="titleError" class="error-message"></div> <!-- Error container for title -->
+                        <div id="edit-titleError" class="error-message"></div> <!-- Error container for title -->
                     </div>
                     <div class="form-group">
                         <label for="image">Image URL:</label>
                         <input type="file" id="image-edit" name="image">
-                        <div id="imageError" class="error-message"></div> <!-- Error container for image -->
+                        <div id="edit-imageError" class="error-message"></div> <!-- Error container for image -->
                     </div>
                     <div class="form-group">
                         <label for="content">Content:</label>
                         <textarea id="content-edit" name="content" rows="5"></textarea>
-                        <div id="contentError" class="error-message"></div> <!-- Error container for content -->
+                        <div id="edit-contentError" class="error-message"></div> <!-- Error container for content -->
                     </div>
-                    <button type="submit">Save change</button>
+                    <button type="submit" id="saveEditButton">Save change</button>
                 </form>
             </div>
         </div>

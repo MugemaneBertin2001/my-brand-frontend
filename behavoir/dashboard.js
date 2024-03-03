@@ -18,14 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if(!sessionStorage.getItem("userEmail")){
         window.location.href = "/admin/login.html"
     }
-
-    articlePopulation();
-
-    document.querySelector('.user-logo').addEventListener('click', function() {
-        sessionStorage.removeItem("userEmail");
-        window.location.href = "/admin/login.html"
-    });
-
+    document.querySelector('.user-logo').addEventListener('click', function(){
+        sessionStorage.removeItem('userEmail')
+        sessionStorage.removeItem('role')
+        window.location.reload();
+    })
     var modal = document.getElementById("myModal");
     var addBlogBtn = document.getElementById("addBlogBtn");
     var closeBtn = document.getElementsByClassName("close")[0];
@@ -36,12 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var titleError = document.getElementById("titleError");
     var imageError = document.getElementById("imageError");
     var contentError = document.getElementById("contentError");
+    addBlogBtn.onclick = function(){
+        modal.style.display = "block"
+    }
 
-    // Open modal
-    addBlogBtn.onclick = function() {
-        modal.style.display = "block";
-    };
+    articlePopulation();
 
+
+
+  
     // Close modal
     closeBtn.onclick = function() {
         modal.style.display = "none";
@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             imageError.textContent = "";
             contentError.textContent = "";
             contentInput.value = "";
+            modal.style.display = "none"
         }
     });
 
@@ -158,32 +159,32 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add event listener to delete button
             const editBtn = blogCard.querySelector('.edit-btn');
             editBtn.addEventListener('click', () => {
-                
-                renderEditModal(articles[index])
+                renderEditModal(articles[index], index)
 
             });
             
         });
     }
 });
-function renderEditModal(article) {
+function renderEditModal(article, index) {
     // Select the modal content
     var modal = document.getElementById("myModal-edit");
     var closeBtn = document.getElementById("close-edit");
        // Close modal
     closeBtn.onclick = function() {
-        modal.style.display = "none";
+        document.getElementById("myModal-edit").style.display = "none";
     };
     modal.style.display = "block";
     // Populate the form fields with existing article information
+    const indexHolder = document.getElementById('index');
     const titleInput = document.getElementById('title-edit');
     const contentInput = document.getElementById('content-edit');
     const imageInput = document.getElementById('image-edit');
-
+    
+    indexHolder.innerHTML = index;
     titleInput.value = article.title;
     contentInput.value = article.content;
     imageInput.value = article.image
-
     // Show the modal
     modalContent.style.display = 'block';
 }
@@ -249,5 +250,91 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render initial message cards
     renderMessageCards();
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const saveEditButton = document.getElementById('saveEditButton');
+    const indexHolder = document.getElementById('index');
+    const titleInput = document.getElementById('title-edit');
+    const imageInput = document.getElementById('image-edit');
+    const contentInput = document.getElementById('content-edit');
+    const editTitleError = document.getElementById('edit-titleError');
+    const editImageError = document.getElementById('edit-imageError');
+    const editContentError = document.getElementById('edit-contentError');
+    const modalEdit = document.getElementById('myModal-edit');
 
+    saveEditButton.addEventListener('click', function(event) {
+        event.preventDefault();
 
+        const articleIndex = parseInt(indexHolder.textContent);
+        let articles = JSON.parse(localStorage.getItem('articles')) || [];
+        const article = articles[articleIndex];
+
+        if (!validateForm()) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const imageBase64 = event.target.result;
+            // Update article data
+            article.title = titleInput.value.trim();
+            article.image = imageBase64 || article.image; // Use existing image if no new image is selected
+            article.content = contentInput.value.trim();
+
+            localStorage.setItem('articles', JSON.stringify(articles));
+            resetForm();
+            window.location.reload();
+        };
+
+        // Check if an image is selected
+        if (imageInput.files[0]) {
+            // Read the selected image file as data URL
+            reader.readAsDataURL(imageInput.files[0]);
+        } else {
+            // Continue without updating the image
+            reader.onload = null;
+            reader.readAsDataURL(new Blob()); // Empty blob
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Reset error messages
+            editTitleError.textContent = "";
+            editImageError.textContent = "";
+            editContentError.textContent = "";
+
+            if (titleInput.value.trim() === "") {
+                editTitleError.textContent = "Title is required.";
+                isValid = false;
+            }
+
+            if (imageInput.files[0] && !isValidImage(imageInput.files[0])) {
+                editImageError.textContent = "Invalid image file format.";
+                isValid = false;
+            }
+
+            if (contentInput.value.trim() === "") {
+                editContentError.textContent = "Content is required.";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function isValidImage(file) {
+            const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            return allowedExtensions.includes(fileExtension);
+        }
+
+        function resetForm() {
+            titleInput.value = "";
+            imageInput.value = "";
+            contentInput.value = "";
+            editTitleError.textContent = "";
+            editImageError.textContent = "";
+            editContentError.textContent = "";
+            modalEdit.style.display = "none";
+        }
+    });
+});

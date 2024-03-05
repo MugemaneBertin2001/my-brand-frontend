@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="./dashboard/article.html?articleId=${index}">Read more</a>
                     <div class="comments-likes">
                         <span>${article.comments.length} Comments</span>
-                        <span>${article.likes} Likes</span>
+                        <span>${article.likes.length} Likes</span>
                     </div>
                 </div>
             </div>

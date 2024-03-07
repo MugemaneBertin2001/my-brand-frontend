@@ -110,23 +110,22 @@ likeButton.addEventListener('click', function() {
 
     // Check if the current user has already liked the article
     const currUser = sessionStorage.getItem('userEmail');
+    if(!currUser){
+        window.location.href = "/admin/login.html"
+        return;
+    }
     const userLikedIndex = article.likes.indexOf(currUser);
 
     if (userLikedIndex === -1) {
-        // If the user hasn't liked the article yet, add their like
         article.likes.push(currUser);
     } else {
-        // If the user has already liked the article, remove their like
         article.likes.splice(userLikedIndex, 1);
     }
 
-    // Update the article in the articles array
     articles[articleId] = article;
 
-    // Save the updated articles array back to local storage
     localStorage.setItem('articles', JSON.stringify(articles));
 
-    // Reload the page to reflect the updated likes
     window.location.reload();
 });
 
@@ -138,21 +137,19 @@ function handleComment() {
     commentForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form submission
 
-        // Get the values from the form inputs
+       
         const authorInput = document.getElementById('comment-author');
         const bodyInput = document.getElementById('comment-body');
         const author = authorInput.value.trim();
         const body = bodyInput.value.trim();
-
-        // Select the error message spans
+ 
         const authorError = document.getElementById('author-error');
         const bodyError = document.getElementById('body-error');
 
-        // Reset error messages
+   
         authorError.innerHTML = '';
         bodyError.innerHTML = '';
-
-        // Validate input fields
+ 
         if (!author) {
             authorError.innerHTML = "Name is required";
             
@@ -162,31 +159,27 @@ function handleComment() {
             return;
         }
 
-        // Get the article ID from the URL query parameters
+    
         const queryParams = new URLSearchParams(window.location.search);
         const articleId = queryParams.get('articleId');
 
-        // Retrieve the article from local storage
+    
         const articles = JSON.parse(localStorage.getItem('articles')) || [];
         const article = articles[articleId];
-
-        // Create the comment object
+ 
         const comment = {
             author: author,
             body: body,
             timestamp: new Date().toLocaleString()
         };
 
-        // Add the comment to the article's comments array
+         
         article.comments.push(comment);
 
-        // Update the article in the articles array
+ 
         articles[articleId] = article;
 
-        // Save the updated articles array back to local storage
         localStorage.setItem('articles', JSON.stringify(articles));
-
-        // Reset the form inputs
         commentForm.reset();
         window.location.reload();
     });

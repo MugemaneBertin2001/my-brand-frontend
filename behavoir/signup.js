@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function(){
         window.location.href = "/dashboard"
     }else if( sessionStorage.getItem('role')==="user"){
         window.location.href = "/"
-    }else{
-        
-        window.location.href = "/admin/login.html"
     }
 });
 

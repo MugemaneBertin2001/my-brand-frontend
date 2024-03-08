@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: titleInput.value.trim(),
                 image: image,
                 content: contentInput.value.trim(),
-                likes: 0,
+                likes: [],
                 comments: []
             };
             articles.push(newArticle);
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
                         <div class="comments-likes">
                             <span><i class="fas fa-comment"></i> ${article.comments.length} Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> ${article.likes} Likes</span>
+                            <span><i class="fas fa-thumbs-up"></i> ${article.likes.length} Likes</span>
                         </div>
                     </div>
                 </div>

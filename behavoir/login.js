@@ -51,13 +51,15 @@ function validateForm(event) {
     
             // Decode the token to get the payload
             var decodedToken = decodeJwt(token);
+
     
             // Extract the user's role from the payload
             var role = decodedToken.userRole; // Assuming 'userRole' is the key for the role in the token payload
-    
+            var email = decodedToken.email;
             // Store the token and role in session storage
             sessionStorage.setItem('token', token);
             sessionStorage.setItem('role', role);
+            sessionStorage.setItem('email', email);
     
             // Redirect to the appropriate dashboard based on the user's role
             if (role === "admin") {

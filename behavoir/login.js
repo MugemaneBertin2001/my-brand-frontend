@@ -31,32 +31,51 @@ function validateForm(event) {
     if (password === "") {
         showError("passwordError", "Please enter your password.");
     }
-    else{
-        var users = JSON.parse(localStorage.getItem("users")) || [];
-
-        // Find user by email
-        var user = users.find(function(user) {
-        return user.email === email;
+    else {
+        fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email, password: password })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Assuming the response contains a token
+            var token = data.token;
+    
+            // Decode the token to get the payload
+            var decodedToken = decodeJwt(token);
+    
+            // Extract the user's role from the payload
+            var role = decodedToken.userRole; // Assuming 'userRole' is the key for the role in the token payload
+    
+            // Store the token and role in session storage
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('role', role);
+    
+            // Redirect to the appropriate dashboard based on the user's role
+            if (role === "admin") {
+                window.location.href = "/dashboard"; // Redirect to admin dashboard
+            } else {
+                window.location.href = "/"; // Redirect to default dashboard
+            }
+        })
+        .catch(error => {
+            console.error('Error authenticating user:', error);
+            showError("loginError", "An error occurred while logging in. Please try again later.");
         });
-
-        // If user not found or password is incorrect, show error
-        if (!user || user.password !== password) {
-            showError("loginError", "Invalid email or password.");
-            return;
-        }
-
-        // If no errors, redirect to dashboard (replace "dashboard.html" with actual dashboard URL)
-        sessionStorage.setItem('userEmail', user.email);
-        sessionStorage.setItem('role', user.role);
-        if(sessionStorage.getItem('role')=== "admin"){
-            window.location.href = "/dashboard";
-            
-        }
-        else{
-            
-            window.location.href = "/";
-        }
     }
+}
+function decodeJwt(token) {
+    const payloadBase64 = token.split('.')[1];
+    const decodedPayload = atob(payloadBase64);
+    return JSON.parse(decodedPayload);
 }
 
 function showError(id, message) {

@@ -459,10 +459,25 @@
                 <li><a href="#work"><i class="fas fa-briefcase"></i> </a></li>
                 <li><a href="#portfolio"><i class="fas fa-folder"></i></a></li>
                 <li><a href="#blog"><i class="fas fa-blog"></i></a></li>
-                <li><a href="./admin/login.html"><i class="fas fa-user"></i></a></li> 
+                <li><button id="fa-user"><i class="fas fa-user"></i></button></li> 
             </ul>
         </div>     
     </main>
  
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+
+        const userButton = document.querySelector('#fa-user');
+
+        userButton.addEventListener('click', ()=>{
+            sessionStorage.removeItem('token')
+            sessionStorage.removeItem('email')
+            sessionStorage.removeItem('role')
+            window.location.href = "/admin/login.html"
+        })
+
+    })
+</script>

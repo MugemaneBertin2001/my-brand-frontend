@@ -15,7 +15,7 @@ function toggleSidebar() {
 }
 document.addEventListener('DOMContentLoaded', function() {
 
-    if(!sessionStorage.getItem("userEmail")){
+    if(!sessionStorage.getItem("token")){
         window.location.href = "/admin/login.html"
     }
     document.querySelector('.user-logo').addEventListener('click', function(){
@@ -53,117 +53,143 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validateForm()) {
             return;
         }
-
-        var articles = JSON.parse(localStorage.getItem('articles')) || [];
-
-        var reader = new FileReader();
-        reader.onload = function(event) {
-            var image = event.target.result;
-            var newArticle = {
-                title: titleInput.value.trim(),
-                image: image,
-                content: contentInput.value.trim(),
-                likes: [],
-                comments: []
-            };
-            articles.push(newArticle);
-            localStorage.setItem('articles', JSON.stringify(articles));
+    
+        var formData = new FormData(); // Create FormData object to store form data
+    
+        // Add form fields to FormData object
+        formData.append('title', titleInput.value.trim());
+        formData.append('content', contentInput.value.trim());
+        formData.append('image', imageInput.files[0]); // Add image file
+    
+        // Fetch endpoint with Bearer token and FormData for file upload
+        var token = sessionStorage.getItem('token');
+        fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}` // Include Bearer token in headers
+            },
+            body: formData // Use FormData object for file upload
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Article created successfully, reset form and update UI
             resetForm();
             articlePopulation(); // Update the displayed articles after adding a new one
-        };
-        reader.readAsDataURL(imageInput.files[0]);
-
+        })
+        .catch(error => {
+            console.error('Error creating article:', error);
+            // Handle error gracefully
+        });
+    
         function validateForm() {
             var isValid = true;
-
+    
             // Reset error messages
             titleError.textContent = "";
             imageError.textContent = "";
             contentError.textContent = "";
-
+    
             if (titleInput.value.trim() === "") {
                 titleError.textContent = "Title is required.";
                 isValid = false;
             }
-
-            if (imageInput.value.trim() === "") {
-                imageError.textContent = "Image URL is required.";
+    
+            if (!imageInput.files[0]) {
+                imageError.textContent = "Image file is required.";
                 isValid = false;
             }
-
+    
             if (contentInput.value.trim() === "") {
                 contentError.textContent = "Content is required.";
                 isValid = false;
             }
-
+    
             return isValid;
         }
-
+    
         function resetForm() {
             form.reset();
             titleError.textContent = "";
             imageError.textContent = "";
             contentError.textContent = "";
             contentInput.value = "";
-            modal.style.display = "none"
+            modal.style.display = "none";
         }
     });
+    
 
-    function articlePopulation() {
+    async function articlePopulation() {
         const blogContainer = document.querySelector('#blog-container');
         blogContainer.innerHTML = ''; // Clear the previous content
     
-        // Retrieve articles from local storage
-        let articles = JSON.parse(localStorage.getItem('articles')) || [];
+        try {
+            // Fetch articles from the backend API
+            const response = await fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const articles = await response.json();
     
-        // Populate blog container with articles
-        articles.forEach((article, index) => { // Add index parameter to keep track of article index
-            // Create a new blog card element
-            const blogCard = document.createElement('div');
-            blogCard.classList.add('blog-card');
+            // Populate blog container with articles
+            articles.forEach((article, index) => { // Add index parameter to keep track of article index
+                // Create a new blog card element
+                const blogCard = document.createElement('div');
+                blogCard.classList.add('blog-card');
     
-            // Set HTML content for the blog card
-            blogCard.innerHTML = `
-                <img src="${article.image}" alt="Blog Image">
-                <div class="blog-info">
-                    <h3>${article.title}</h3>
-                    <div class="content-body">
-                        <p>${article.content}</p>
-                    </div>
-                    <div class="meta">
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                        <div class="comments-likes">
-                            <span><i class="fas fa-comment"></i> ${article.comments.length} Comments</span>
-                            <span><i class="fas fa-thumbs-up"></i> ${article.likes.length} Likes</span>
+                // Set HTML content for the blog card
+                blogCard.innerHTML = `
+                    <img src="${article.blogImage}" alt="Blog Image">
+                    <div class="blog-info">
+                        <h3>${article.title}</h3>
+                        <div class="content-body">
+                            <p>${article.content}</p>
+                        </div>
+                        <div class="meta">
+                            <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                            <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <div class="comments-likes">
+                                <span><i class="fas fa-comment"></i> ${article.comments.length} Comments</span>
+                                <span><i class="fas fa-thumbs-up"></i> ${article.likes.length} Likes</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
     
-            // Append the blog card to the blog container
-            blogContainer.appendChild(blogCard);
+                // Append the blog card to the blog container
+                blogContainer.appendChild(blogCard);
     
-            // Add event listener to delete button
-            const deleteBtn = blogCard.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', () => {
-                // Remove the article from the articles array
-                articles.splice(index, 1);
+                // Add event listener to delete button
+                const deleteBtn = blogCard.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', async () => {
+                    try {
+                        // Make a DELETE request to remove the article from the backend
+                        const deleteResponse = await fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${article.id}`, {
+                            method: 'DELETE',
+                        });
+                        if (!deleteResponse.ok) {
+                            throw new Error('Failed to delete article');
+                        }
     
-                // Update local storage with the modified articles array
-                localStorage.setItem('articles', JSON.stringify(articles));
+                        // Re-populate the blog container to reflect the changes
+                        articlePopulation();
+                    } catch (error) {
+                        console.error('Error deleting article:', error);
+                        // Handle error gracefully
+                    }
+                });
     
-                // Re-populate the blog container to reflect the changes
-                articlePopulation();
+                // Add event listener to edit button
+                const editBtn = blogCard.querySelector('.edit-btn');
+                editBtn.addEventListener('click', () => {
+                    renderEditModal(article, index);
+                });
             });
-            // Add event listener to delete button
-            const editBtn = blogCard.querySelector('.edit-btn');
-            editBtn.addEventListener('click', () => {
-                renderEditModal(articles[index], index)
-
-            });
-            
-        });
+        } catch (error) {
+            console.error('Error fetching articles:', error);
+            // Handle error gracefully
+        }
     }
 });
 function renderEditModal(article, index) {
@@ -191,11 +217,28 @@ function renderEditModal(article, index) {
 document.addEventListener('DOMContentLoaded', function() {
     const messageCardsContainer = document.querySelector('.message-cards');
 
-    // Retrieve messages from local storage
-    let messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+    // Retrieve messages from the server
+    fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/message')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch messages');
+            }
+            return response.json();
+        })
+        .then(messages => {
+            // Handle the retrieved messages
+            console.log('All messages:', messages);
+            // Render message cards with the retrieved messages
+            renderMessageCards(messages);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors, such as displaying an error message to the user
+            alert('An error occurred while fetching messages. Please try again later.');
+        });
 
     // Function to render message cards
-    function renderMessageCards() {
+    function renderMessageCards(messages) {
         // Clear existing message cards
         messageCardsContainer.innerHTML = '';
 
@@ -213,14 +256,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="message-info">
                     <div class="message-subject">${message.subject}</div>
                     <div class="message-body">
-                        <p>${message.message}</p>
+                        <p>${message.messageBody}</p>
                     </div> 
-                    </div>
-                    <div class="meta">
+                </div>
+                <div class="meta">
                     <div class="message-timestamp">${message.timestamp}</div>
                     <button class="respond-btn">Respond</button>
                     <button class="delete-btn" data-index="${index}">Delete</button>
-                    <div>
                 </div>
             `;
 
@@ -246,10 +288,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    // Render initial message cards
-    renderMessageCards();
 });
+
 document.addEventListener('DOMContentLoaded', function() {
     const saveEditButton = document.getElementById('saveEditButton');
     const indexHolder = document.getElementById('index');

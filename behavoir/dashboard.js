@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add form fields to FormData object
         formData.append('title', titleInput.value.trim());
         formData.append('content', contentInput.value.trim());
-        formData.append('image', imageInput.files[0]); // Add image file
+        formData.append('file', imageInput.files[0]); // Add image file
     
         // Fetch endpoint with Bearer token and FormData for file upload
         var token = sessionStorage.getItem('token');
@@ -133,12 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const articles = await response.json();
     
             // Populate blog container with articles
-            articles.forEach((article, index) => { // Add index parameter to keep track of article index
-                // Create a new blog card element
+            articles.forEach((article, index) => {
                 const blogCard = document.createElement('div');
                 blogCard.classList.add('blog-card');
     
-                // Set HTML content for the blog card
                 blogCard.innerHTML = `
                     <img src="${article.blogImage}" alt="Blog Image">
                     <div class="blog-info">
@@ -157,17 +155,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
     
-                // Append the blog card to the blog container
                 blogContainer.appendChild(blogCard);
     
-                // Add event listener to delete button
                 const deleteBtn = blogCard.querySelector('.delete-btn');
                 deleteBtn.addEventListener('click', async () => {
                     try {
-                        // Make a DELETE request to remove the article from the backend
-                        const deleteResponse = await fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${article.id}`, {
+                        const token = sessionStorage.getItem('token');
+    
+                        if (!token) {
+                            throw new Error('Token not found');
+                        }
+    
+                        const deleteResponse = await fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${article._id}`, {
                             method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                            },
                         });
+    
                         if (!deleteResponse.ok) {
                             throw new Error('Failed to delete article');
                         }
@@ -178,12 +183,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error('Error deleting article:', error);
                         // Handle error gracefully
                     }
+                
                 });
     
                 // Add event listener to edit button
                 const editBtn = blogCard.querySelector('.edit-btn');
                 editBtn.addEventListener('click', () => {
-                    renderEditModal(article, index);
+                    renderEditModal(article, article._id);
                 });
             });
         } catch (error) {
@@ -231,11 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Render message cards with the retrieved messages
             renderMessageCards(messages);
         })
-        .catch(error => {
-            console.error('Error:', error);
-            // Handle errors, such as displaying an error message to the user
-            alert('An error occurred while fetching messages. Please try again later.');
-        });
 
     // Function to render message cards
     function renderMessageCards(messages) {
@@ -262,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="meta">
                     <div class="message-timestamp">${message.timestamp}</div>
                     <button class="respond-btn">Respond</button>
-                    <button class="delete-btn" data-index="${index}">Delete</button>
+                    <button class="delete-btn" data-index="${message._id}">Delete</button>
                 </div>
             `;
 
@@ -274,19 +275,33 @@ document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.delete-btn');
         deleteButtons.forEach(deleteBtn => {
             deleteBtn.addEventListener('click', () => {
-                // Get the index of the message to delete
-                const index = parseInt(deleteBtn.getAttribute('data-index'));
-
-                // Remove the message from the messages array
-                messages.splice(index, 1);
-
-                // Update local storage with the modified messages array
-                localStorage.setItem('contactMessages', JSON.stringify(messages));
-
-                // Reload the page to reflect the changes
-                location.reload();
+                const messageId = deleteBtn.getAttribute('data-index');
+    
+        
+                // Replace 'getTokenFromSomeWhere()' with the method to obtain the token
+                const token = sessionStorage.getItem('token'); // Example: Retrieve token from session storage, cookie, or another method
+        
+                // Send a DELETE request to the API endpoint with the token in the headers
+                fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/message/${messageId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Include the token in the 'Authorization' header
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete message');
+                    }
+                    window.location.reload()
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Handle errors appropriately (e.g., show error message to user)
+                });
             });
         });
+        
     }
 });
 
@@ -301,72 +316,81 @@ document.addEventListener('DOMContentLoaded', function() {
     const editContentError = document.getElementById('edit-contentError');
     const modalEdit = document.getElementById('myModal-edit');
 
-    saveEditButton.addEventListener('click', function(event) {
+    saveEditButton.addEventListener('click', async function(event) {
         event.preventDefault();
-
-        const articleIndex = parseInt(indexHolder.textContent);
-        let articles = JSON.parse(localStorage.getItem('articles')) || [];
-        const article = articles[articleIndex];
+        const blogId = indexHolder.textContent; // Assuming the indexHolder contains the blog post ID
+        const formData = new FormData();
+        formData.append('title', titleInput.value.trim());
+        formData.append('content', contentInput.value.trim());
+        formData.append('file', imageInput.files[0]);
 
         if (!validateForm()) {
             return;
         }
 
-        // Update article data
-        article.title = titleInput.value.trim();
-        article.content = contentInput.value.trim();
+        const token = sessionStorage.getItem('token'); // Replace getToken() with your function to retrieve the token
 
-        // Check if an image is selected
-        if (imageInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const imageBase64 = event.target.result;
-                article.image = imageBase64; // Update image only if a new image is selected
-                updateArticle();
-            };
-            // Read the selected image file as data URL
-            reader.readAsDataURL(imageInput.files[0]);
-        } else {
-            updateArticle(); // No new image selected, proceed with updating article
-        }
+        try {
+            const response = await fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${blogId}`, {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }   
+            });
 
-        function updateArticle() {
-            // Update the article in the articles array
-            articles[articleIndex] = article;
-            localStorage.setItem('articles', JSON.stringify(articles));
+            if (!response.ok) {
+                throw new Error('Failed to update blog post.');
+            }
+
             resetForm();
-            window.location.reload();
-        }
-
-        function validateForm() {
-            let isValid = true;
-
-            // Reset error messages
-            editTitleError.textContent = "";
-            editImageError.textContent = "";
-            editContentError.textContent = "";
-
-            if (titleInput.value.trim() === "") {
-                editTitleError.textContent = "Title is required.";
-                isValid = false;
-            }
-
-            if (contentInput.value.trim() === "") {
-                editContentError.textContent = "Content is required.";
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        function resetForm() {
-            titleInput.value = "";
-            imageInput.value = "";
-            contentInput.value = "";
-            editTitleError.textContent = "";
-            editImageError.textContent = "";
-            editContentError.textContent = "";
-            modalEdit.style.display = "none";
+            window.location.reload(); // Reload the page after successful update
+        } catch (error) {
+            alert('Error updating blog post:'.concat( error.message));
+            // Handle error gracefully
         }
     });
+
+    function validateForm() {
+        let isValid = true;
+
+        // Reset error messages
+        editTitleError.textContent = "";
+        editImageError.textContent = "";
+        editContentError.textContent = "";
+
+        if (titleInput.value.trim() === "") {
+            editTitleError.textContent = "Title is required.";
+            isValid = false;
+        }
+
+        if (contentInput.value.trim() === "") {
+            editContentError.textContent = "Content is required.";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function resetForm() {
+        titleInput.value = "";
+        imageInput.value = "";
+        contentInput.value = "";
+        editTitleError.textContent = "";
+        editImageError.textContent = "";
+        editContentError.textContent = "";
+        modalEdit.style.display = "none";
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector("#home-render").addEventListener('click', () => {
+        window.location.href = "/"; // Redirect to home page when clicking the home button
+    });
+    document.querySelector("#home-render").innerHTML = sessionStorage.getItem('email')
+
+    document.querySelector("#home-render").style.fontSize = "1.2rem"
+    document.querySelector("#home-render").style.textAlignment = "center"
+
 });

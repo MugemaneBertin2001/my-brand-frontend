@@ -11,37 +11,48 @@ function closeMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Retrieve saved articles from localStorage
-    var articles = JSON.parse(localStorage.getItem('articles')) || [];
     var blogCardsContainer = document.getElementById('blogCardsContainer');
 
-    // Iterate through saved articles and display them
-    articles.forEach((article, index) => {
-        // Create HTML structure for each article
-        var blogCard = document.createElement('div');
-        blogCard.classList.add('blog-card');
+    fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Assuming data is an array of articles
+            var articles = data || [];
+            articles.forEach((article, index) => {
+                var blogCard = document.createElement('div');
+                blogCard.classList.add('blog-card');
 
-        blogCard.innerHTML = `
-            <img src="${article.image}" alt="Blog Image">
-            <div class="blog-info">
-                <h3>${article.title}</h3>
-                <div class="content-body">
-                    <p>${article.content}</p>
-                </div>
-                <div class="meta">
-                    <a href="./dashboard/article.html?articleId=${index}">Read more</a>
-                    <div class="comments-likes">
-                        <span>${article.comments.length} Comments</span>
-                        <span>${article.likes.length} Likes</span>
+                blogCard.innerHTML = `
+                    <img src="${article.blogImage}" alt="Blog Image">
+                    <div class="blog-info">
+                        <h3>${article.title}</h3>
+                        <div class="content-body">
+                            <p>${article.content}</p>
+                        </div>
+                        <div class="meta">
+                            <a href="./dashboard/article.html?articleId=${article._id}">Read more</a>
+                            <div class="comments-likes">
+                                <span>${article.comments.length} Comments</span>
+                                <span>${article.likes.length} Likes</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        `;
+                `;
 
-        // Append the blog card to the container
-        blogCardsContainer.appendChild(blogCard);
-    });
+                blogCardsContainer.appendChild(blogCard);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching articles:', error);
+            // Handle errors gracefully, e.g., display an error message to the user
+        });
 });
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var contactForm = document.getElementById("contact-form");
@@ -103,18 +114,36 @@ document.addEventListener('DOMContentLoaded', function() {
             fullName: fullNameInput.value.trim(),
             email: emailInput.value.trim(),
             subject: subjectInput.value.trim(),
-            message: messageInput.value.trim(),
-            timestamp: new Date().toLocaleString(),
+            messageBody: messageInput.value.trim(),
         };
 
-        // Retrieve existing messages from local storage
-        var savedMessages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+        console.log(formData)
+        
+        fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Display a success message
+                    alert('Message sent successfully');
+                    window.location.reload();
+                } else {
+                    // Display an error message
+                    alert('Failed to send message. Please try again later.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An unexpected error occurred: '.concat(error));
+});
 
-        // Add the new message to the array
-        savedMessages.push(formData);
 
-        // Save the updated array back to local storage
-        localStorage.setItem('contactMessages', JSON.stringify(savedMessages));
+
+
         clearInput(fullNameInput);
         clearInput(emailInput);
         clearInput(subjectInput);

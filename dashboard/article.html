@@ -8,184 +8,235 @@
  
 </head>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
     // Get the query parameters from the URL
     const queryParams = new URLSearchParams(window.location.search);
 
     // Get the value of the "articleId" parameter
     const articleId = queryParams.get('articleId');
 
-    // Retrieve the article from localStorage using the articleId
-    const articles = JSON.parse(localStorage.getItem('articles')) || [];
-    const article = articles[articleId];
+    // Fetch the article from the API using the articleId
+    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(article => {
+            // Once the article is fetched, populate the DOM elements with the article data
 
-    // Select the article header
-    const articleHeader = document.querySelector('.article-header');
+            // Select the article header
+            const articleHeader = document.querySelector('.article-header');
 
-    // Populate the article header with data
-    const articleImage = articleHeader.querySelector('.article-image');
-    articleImage.src = article.image;
-    articleImage.alt = 'Article Image';
+            // Populate the article header with data
+            const articleImage = articleHeader.querySelector('.article-image');
+            articleImage.src = article.blogImage;
+            articleImage.alt = 'Article Image';
 
-    const articleTitle = articleHeader.querySelector('.article-title');
-    articleTitle.textContent = article.title;
+            const articleTitle = articleHeader.querySelector('.article-title');
+            articleTitle.textContent = article.title;
 
-    // Select the article content
-    const articleContent = document.querySelector('.article-content');
+            // Select the article content
+            const articleContent = document.querySelector('.article-content');
+            articleContent.innerHTML = article.content;
 
-    articleContent.innerHTML = article.content
+            // Select the article meta
+            const articleMeta = document.querySelector('.article-meta');
 
-    // Select the article meta
-    const articleMeta = document.querySelector('.article-meta');
+    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/comment`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(comments => {
+        // Select the comments container
+        const commentsContainer = document.querySelector('.comments-container');
+        const commentsInd = commentsContainer.querySelector('h2');
 
-// Select the comments container
-const commentsContainer = document.querySelector('.comments-container');
-const commentsInd = commentsContainer.querySelector('h2');
-commentsInd.innerHTML= `${article.comments.length} ${commentsInd.innerHTML}`
+        // Update the comments indicator with the total number of comments
+        commentsInd.innerHTML = `${comments.comments.length} ${commentsInd.innerHTML}`;
 
-// Check if there are comments for the article
-if (article.comments && article.comments.length > 0) {
-    
-    // Populate the comments container with comments
-    article.comments.forEach(comment => {
-        // Create a comment element
-        const commentElement = document.createElement('div');
-        commentElement.classList.add('comment');
+        // Check if there are comments for the article
+        if (comments && comments.comments.length > 0) {
+            // Populate the comments container with comments
+            comments.comments.forEach(comment => {
+                // Create a comment element
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment');
 
-        // Create the comment author
-        const commentAuthor = document.createElement('div');
-        commentAuthor.classList.add('comment-author');
-        commentAuthor.textContent = comment.author;
+                // Create the comment author
+                const commentAuthor = document.createElement('div');
+                commentAuthor.classList.add('comment-author');
+                commentAuthor.textContent = comment.name;
 
-        // Create the comment body
-        const commentBody = document.createElement('div');
-        commentBody.classList.add('comment-body');
-        commentBody.textContent = comment.body;
+                // Create the comment body
+                const commentBody = document.createElement('div');
+                commentBody.classList.add('comment-body');
+                commentBody.textContent = comment.body;
 
-        // Create the comment actions
-        const commentActions = document.createElement('div');
-        commentActions.classList.add('comment-actions');
+                // Append the comment author and body to the comment element
+                commentElement.appendChild(commentAuthor);
+                commentElement.appendChild(commentBody);
 
-        // Create the like button
-        const likeButton = document.createElement('button');
-        likeButton.classList.add('like-btn');
-        likeButton.textContent = 'Like';
-
-        // // Create the reply button
-        // const replyButton = document.createElement('button');
-        // replyButton.classList.add('comment-btn');
-        // replyButton.textContent = 'Reply';
-
-        // // Append the like and reply buttons to the comment actions
-        // commentActions.appendChild(likeButton);
-        // commentActions.appendChild(replyButton);
-
-        // Append the comment author, body, and actions to the comment element
-        commentElement.appendChild(commentAuthor);
-        commentElement.appendChild(commentBody);
-        commentElement.appendChild(commentActions);
-
-        // Append the comment element to the comments container
-        commentsContainer.appendChild(commentElement);
+                // Append the comment element to the comments container
+                commentsContainer.appendChild(commentElement);
+            });
+        } else {
+            // If there are no comments, display a message
+            const noCommentsMessage = document.createElement('div');
+            noCommentsMessage.textContent = 'No comments available.';
+            commentsContainer.appendChild(noCommentsMessage);
+        }
+    })
+    .catch(error => {
+        console.error('There was a problem fetching comments:', error);
     });
-} else {
-    // If there are no comments, display a message
-    const noCommentsMessage = document.createElement('div');
-    noCommentsMessage.textContent = 'No comments available.';
-    commentsContainer.appendChild(noCommentsMessage);
-}
 
-const likeButton = document.querySelector('#like-button');
-likeButton.innerHTML = article.likes.length;
-likeButton.innerHTML += (article.likes.length > 1 ? "  likes" : "  like");
+    // likes handlings
 
-likeButton.addEventListener('click', function() {
-    // Get the article ID from the URL query parameters
-    const queryParams = new URLSearchParams(window.location.search);
-    const articleId = queryParams.get('articleId');
+    const userToken = sessionStorage.getItem('token');
 
-    // Retrieve the article from local storage
-    const articles = JSON.parse(localStorage.getItem('articles')) || [];
-    const article = articles[articleId];
+    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/likes`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    // Add any required body parameters for the POST request, if applicable
+    // body: JSON.stringify({ /* your request body parameters */ })
+})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(likes => {
+        // Update the like button with the number of likes
+        const likeButton = document.querySelector('#like-button');
+        likeButton.innerHTML = likes.length;
+        likeButton.innerHTML += (article.likes.length > 1 ? " likes" : " like");
 
-    // Check if the current user has already liked the article
-    const currUser = sessionStorage.getItem('userEmail');
-    if(!currUser){
-        window.location.href = "/admin/login.html"
-        return;
-    }
-    const userLikedIndex = article.likes.indexOf(currUser);
+        // Add event listener to the like button
+        likeButton.addEventListener('click', function() {
 
-    if (userLikedIndex === -1) {
-        article.likes.push(currUser);
-    } else {
-        article.likes.splice(userLikedIndex, 1);
-    }
+            const userToken = sessionStorage.getItem('token')
 
-    articles[articleId] = article;
+            if(!userToken){
+                window.location.href = '/admin/login.html'
+            }
+    // Construct the request headers
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}` // Include the token in the Authorization header
+    };
 
-    localStorage.setItem('articles', JSON.stringify(articles));
-
-    window.location.reload();
+    // Send POST request to like the article
+    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/like`, {
+        method: 'POST',
+        headers: headers
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Parse the response JSON
+        return response.json();
+    })
+    .then(data => {
+        // Check if the like was added or removed
+        const message = data.message || 'You liked the article.';
+        // Display the message in an alert
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error('There was a problem liking the article:', error);
+    });
 });
+    })
+    .catch(error => {
+        console.error('There was a problem fetching the article:', error);
+    });
 
 
-});
+
+    
+    })
+            .catch(error => {
+                console.error('There was a problem fetching the article:', error);
+            });
+    });
+
 
 function handleComment() {
     const commentForm = document.getElementById('add-comment-form');
     commentForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form submission
 
-       
         const authorInput = document.getElementById('comment-author');
         const bodyInput = document.getElementById('comment-body');
         const author = authorInput.value.trim();
         const body = bodyInput.value.trim();
- 
+
         const authorError = document.getElementById('author-error');
         const bodyError = document.getElementById('body-error');
 
-   
         authorError.innerHTML = '';
         bodyError.innerHTML = '';
- 
+
         if (!author) {
             authorError.innerHTML = "Name is required";
-            
+            return;
         }
         if (!body) {
             bodyError.innerHTML = "Comment is required";
             return;
         }
 
-    
+        // Get the article ID from the URL query parameters
         const queryParams = new URLSearchParams(window.location.search);
         const articleId = queryParams.get('articleId');
 
-    
-        const articles = JSON.parse(localStorage.getItem('articles')) || [];
-        const article = articles[articleId];
- 
+        // Construct the comment object
         const comment = {
-            author: author,
-            body: body,
-            timestamp: new Date().toLocaleString()
+            name: author,
+            body: body
         };
 
-         
-        article.comments.push(comment);
+        // Send a POST request to add the comment
+        fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Check if the API response contains a message indicating success
+            if (data && data.message === "Comment added successfully") {
+                // Optionally, you can update the UI to indicate that the comment was added successfully
+                window.location.reload();
 
- 
-        articles[articleId] = article;
-
-        localStorage.setItem('articles', JSON.stringify(articles));
-        commentForm.reset();
-        window.location.reload();
+                // Clear the form fields
+                commentForm.reset();
+            } else {
+                // Handle other API responses or errors
+                console.error('Failed to add comment:', data);
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem adding the comment:', error);
+        });
     });
 }
-
-
 
 
 </script>
@@ -193,13 +244,11 @@ function handleComment() {
     <div class="article-container">
         <a href="/" class="back-link">Go Back Home</a>
         <div class="article-header">
-            <img class="article-image" src="../images/blogs/artificial-intelligence.jpg" alt="Article Image">
+            <img class="article-image">
             <h1 class="article-title">The Rise of Artificial Intelligence in Business</h1>
         </div>
         <div class="article-content">
-            <p>Artificial Intelligence (AI) is revolutionizing various industries, including business. It has become a driving force behind innovation, efficiency, and growth in today's digital age. Businesses are leveraging AI technologies to automate processes, analyze vast amounts of data, enhance decision-making, and improve customer experiences.</p>
-            <p>From predictive analytics to natural language processing, AI applications are diverse and impactful. Companies are deploying AI-powered tools and systems to optimize operations, increase productivity, and gain competitive advantages.</p>
-            <p>As AI continues to evolve, its integration into business processes will become more widespread. To stay ahead in the rapidly changing landscape, businesses must embrace AI technologies, invest in talent, and adapt their strategies accordingly.</p>
+            
         </div>
         <div class="article-meta">
             <div class="article-author">By: John Doe</div>

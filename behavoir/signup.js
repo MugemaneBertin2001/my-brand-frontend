@@ -46,22 +46,29 @@ function validateForm(event) {
         showError("confirmPasswordError", "Passwords do not match.");
     }
     else{
-        var users = JSON.parse(localStorage.getItem("users")) || [];
-
-        // Add new user data to the array
-        var newUser = { 
-            fullName: fullName, 
-            email: email, 
-            password: password ,
-            role : 'user'
+        const newUser = {
+            fullName: fullName,
+            email: email,
+            password: password,
+            role: 'user'
         };
-        users.push(newUser);
 
-        // Save updated user data back to localStorage
-        localStorage.setItem("users", JSON.stringify(users));
-
-        // Redirect to the login page
-        window.location.href = "login.html";
+        fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            window.location.href = "login.html";
+        })
+        .catch(error => {
+            console.error('There was a problem registering the user:', error);
+        });
 
     }
 

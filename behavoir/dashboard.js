@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
                 const deleteBtn = blogCard.querySelector('.delete-btn');
                 deleteBtn.addEventListener('click', async () => {
+                    document.querySelector('#loader').style.display = "block";
                     try {
                         const token = sessionStorage.getItem('token');
     
@@ -184,6 +185,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error('Error deleting article:', error);
                         // Handle error gracefully
                     }
+                    document.querySelector('#loader').style.display = "none";
+
                 
                 });
     
@@ -222,6 +225,7 @@ function renderEditModal(article, index) {
     modalContent.style.display = 'block';
 }
 document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#loader').style.display = "block";
     const messageCardsContainer = document.querySelector('.message-cards');
 
     // Retrieve messages from the server
@@ -238,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Render message cards with the retrieved messages
             renderMessageCards(messages);
         })
+       
 
     // Function to render message cards
     function renderMessageCards(messages) {
@@ -272,16 +277,20 @@ document.addEventListener('DOMContentLoaded', function() {
             messageCardsContainer.appendChild(messageCard);
         });
 
+        document.querySelector('#loader').style.display = "none";
+
         // Add event listeners for delete buttons
         const deleteButtons = document.querySelectorAll('.delete-btn');
         deleteButtons.forEach(deleteBtn => {
             deleteBtn.addEventListener('click', () => {
+
                 const messageId = deleteBtn.getAttribute('data-index');
-    
-        
+                
+                
                 // Replace 'getTokenFromSomeWhere()' with the method to obtain the token
                 const token = sessionStorage.getItem('token'); // Example: Retrieve token from session storage, cookie, or another method
-        
+                
+                document.querySelector('#loader').style.display = "block";
                 // Send a DELETE request to the API endpoint with the token in the headers
                 fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/message/${messageId}`, {
                     method: 'DELETE',
@@ -300,6 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error(error);
                     // Handle errors appropriately (e.g., show error message to user)
                 });
+                document.querySelector('#loader').style.display = "none";
             });
         });
         
@@ -400,22 +410,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
 const tex = window.tex;
 
-tex.init({
-        element: document.querySelector('.editor1'),
-        buttons: ['fontSize', 'bold', 'italic', 'underline', 'strikethrough', 'heading1', 'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 'line', 'link', 'image', 'html', 'textColor', 'textBackColor', 'indent', 'outdent', 'undo', 'redo', 'justifyCenter', 'justifyFull', 'justifyLeft', 'justifyRight'],   
-  onChange: (content) => {
-            console.log("Editor 1:", content);
-        }
-    });
-
     tex.init({
         element: document.querySelector('.editor1'),
-        buttons: ['bold', 'italic', 'underline', 'strikethrough', 'textColor', 'heading1', 'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 'line', 'link', 'image', 'html'],
-        defaultParagraphSeparator: 'p',
-        styleWithCSS: false,
-        theme: 'light',
+        buttons: [
+            'fontSize', 'bold', 'italic', 'underline', 'strikethrough', 'heading1', 
+            'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 
+            'line', 'link', 'image', 'html', 'textColor', 'textBackColor', 'indent', 
+            'outdent', 'undo', 'redo', 'justifyCenter', 'justifyFull', 'justifyLeft', 
+            'justifyRight'
+        ],   
         onChange: (content) => {
-            console.log("Editor 2:", content);
+            console.log("Editor:", content);
         }
     });
 

@@ -672,4 +672,5 @@ button[type="submit"]:hover {
 .form-group button, .form-group button:hover{
     background-color: #000;
     color: #ffffff;
+    margin: 3px;
 }

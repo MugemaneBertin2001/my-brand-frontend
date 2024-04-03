@@ -13,7 +13,8 @@ function closeMenu() {
 document.addEventListener('DOMContentLoaded', function() {
 
     var blogCardsContainer = document.getElementById('blogCardsContainer');
-    document.querySelector('#loader').style.display = "block";
+    var loader = document.querySelector('#loader');
+    loader.style.display = "block";
 
     fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs')
         .then(response => {
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="blog-info">
                         <h3>${article.title}</h3>
                         <div class="content-body">
-                        <p class="blog-cont" id="articleContent">${article.content}</p>
+                            <p class="blog-cont" id="articleContent">${article.content}</p>
                         </div>
                         <div class="meta">
                             <a href="./dashboard/article.html?articleId=${article._id}">Read more</a>
@@ -52,8 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error fetching articles:', error);
             // Handle errors gracefully, e.g., display an error message to the user
+        })
+        .finally(() => {
+            loader.style.display = "none";
         });
-        document.querySelector('#loader').style.display = "none";
+
 });
 
 
@@ -120,8 +124,11 @@ document.addEventListener('DOMContentLoaded', function() {
             messageBody: messageInput.value.trim(),
         };
 
-        console.log(formData)
+        console.log(formData);
         
+        var loader = document.querySelector('#loader');
+        loader.style.display = "block";
+
         fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/message', {
                 method: 'POST',
                 headers: {
@@ -142,16 +149,17 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error:', error);
                 alert('An unexpected error occurred: '.concat(error));
-});
-
-
-
+            })
+            .finally(() => {
+                loader.style.display = "none";
+            });
 
         clearInput(fullNameInput);
         clearInput(emailInput);
         clearInput(subjectInput);
         clearInput(messageInput);
     }
+
     function clearInput(input){
         input.value = "";
     }

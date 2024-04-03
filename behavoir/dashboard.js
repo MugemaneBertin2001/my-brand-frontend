@@ -41,8 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  
-    // Close modal
     closeBtn.onclick = function() {
         modal.style.display = "none";
         resetForm();
@@ -54,40 +52,36 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
     
-        var formData = new FormData(); // Create FormData object to store form data
+        var formData = new FormData();
     
-        // Add form fields to FormData object
         formData.append('title', titleInput.value.trim());
         formData.append('content', contentInput.value.trim());
-        formData.append('file', imageInput.files[0]); // Add image file
+        formData.append('file', imageInput.files[0]); 
     
-        // Fetch endpoint with Bearer token and FormData for file upload
         var token = sessionStorage.getItem('token');
         
         fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}` // Include Bearer token in headers
+                'Authorization': `Bearer ${token}` 
             },
-            body: formData // Use FormData object for file upload
+            body: formData 
         })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            // Article created successfully, reset form and update UI
+            
             resetForm();
-            articlePopulation(); // Update the displayed articles after adding a new one
+            articlePopulation();
         })
         .catch(error => {
             console.error('Error creating article:', error);
-            // Handle error gracefully
         });
     
         function validateForm() {
             var isValid = true;
     
-            // Reset error messages
             titleError.textContent = "";
             imageError.textContent = "";
             contentError.textContent = "";
@@ -123,17 +117,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function articlePopulation() {
         const blogContainer = document.querySelector('#blog-container');
-        blogContainer.innerHTML = ''; // Clear the previous content
+        blogContainer.innerHTML = ''; 
     
         try {
-            // Fetch articles from the backend API
+            document.querySelector('#loader').style.display = "block"
+        
             const response = await fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const articles = await response.json();
     
-            // Populate blog container with articles
+            
             articles.forEach((article, index) => {
                 const blogCard = document.createElement('div');
                 blogCard.classList.add('blog-card');
@@ -157,21 +152,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
     
                 blogContainer.appendChild(blogCard);
+                document.querySelector('#loader').style.display = "none"
     
                 const deleteBtn = blogCard.querySelector('.delete-btn');
                 deleteBtn.addEventListener('click', async () => {
-                    document.querySelector('#loader').style.display = "block";
+                    document.querySelector('#loader').style.display = "block"
                     try {
                         const token = sessionStorage.getItem('token');
     
                         if (!token) {
                             throw new Error('Token not found');
                         }
-    
                         const deleteResponse = await fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${article._id}`, {
                             method: 'DELETE',
                             headers: {
-                                'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                                'Authorization': `Bearer ${token}`,
                             },
                         });
     
@@ -179,18 +174,16 @@ document.addEventListener('DOMContentLoaded', function() {
                             throw new Error('Failed to delete article');
                         }
     
-                        // Re-populate the blog container to reflect the changes
                         articlePopulation();
                     } catch (error) {
                         console.error('Error deleting article:', error);
-                        // Handle error gracefully
+                        
                     }
-                    document.querySelector('#loader').style.display = "none";
-
+                    document.querySelector('#loader').style.display = "none"
                 
                 });
     
-                // Add event listener to edit button
+            
                 const editBtn = blogCard.querySelector('.edit-btn');
                 editBtn.addEventListener('click', () => {
                     renderEditModal(article, article._id);
@@ -198,20 +191,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } catch (error) {
             console.error('Error fetching articles:', error);
-            // Handle error gracefully
         }
     }
 });
 function renderEditModal(article, index) {
-    // Select the modal content
     var modal = document.getElementById("myModal-edit");
     var closeBtn = document.getElementById("close-edit");
-       // Close modal
     closeBtn.onclick = function() {
         document.getElementById("myModal-edit").style.display = "none";
     };
     modal.style.display = "block";
-    // Populate the form fields with existing article information
     const indexHolder = document.getElementById('index');
     const titleInput = document.getElementById('title-edit');
     const contentInput = document.getElementById('content-edit');
@@ -219,16 +208,13 @@ function renderEditModal(article, index) {
     
     indexHolder.innerHTML = index;
     titleInput.value = article.title;
-    contentInput.value = article.content;
+    contentInput.value = article.content.trim();
     imageInput.value = article.image
-    // Show the modal
     modalContent.style.display = 'block';
 }
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#loader').style.display = "block";
+    document.querySelector('#loader').style.display = "block"
     const messageCardsContainer = document.querySelector('.message-cards');
-
-    // Retrieve messages from the server
     fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/message')
         .then(response => {
             if (!response.ok) {
@@ -237,25 +223,20 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(messages => {
-            // Handle the retrieved messages
             console.log('All messages:', messages);
-            // Render message cards with the retrieved messages
             renderMessageCards(messages);
         })
-       
 
-    // Function to render message cards
+   
     function renderMessageCards(messages) {
-        // Clear existing message cards
+
         messageCardsContainer.innerHTML = '';
 
-        // Iterate over messages and populate message cards container
         messages.forEach((message, index) => {
-            // Create a new message card element
+
             const messageCard = document.createElement('div');
             messageCard.classList.add('message-card');
-
-            // Set HTML content for the message card
+ 
             messageCard.innerHTML = `
                 <div class="sender-info">
                     <div class="sender-name">${message.fullName}</div>
@@ -273,30 +254,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
 
-            // Append the message card to the message cards container
             messageCardsContainer.appendChild(messageCard);
         });
-
-        document.querySelector('#loader').style.display = "none";
-
-        // Add event listeners for delete buttons
+        document.querySelector('#loader').style.display = "none"
         const deleteButtons = document.querySelectorAll('.delete-btn');
         deleteButtons.forEach(deleteBtn => {
             deleteBtn.addEventListener('click', () => {
-
                 const messageId = deleteBtn.getAttribute('data-index');
                 
+               
+                const token = sessionStorage.getItem('token'); 
+                document.querySelector('#loader').style.display = "block"
                 
-                // Replace 'getTokenFromSomeWhere()' with the method to obtain the token
-                const token = sessionStorage.getItem('token'); // Example: Retrieve token from session storage, cookie, or another method
-                
-                document.querySelector('#loader').style.display = "block";
-                // Send a DELETE request to the API endpoint with the token in the headers
                 fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/message/${messageId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // Include the token in the 'Authorization' header
+                        'Authorization': `Bearer ${token}`
                     },
                 })
                 .then(response => {
@@ -307,9 +281,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error(error);
-                    // Handle errors appropriately (e.g., show error message to user)
+                    
                 });
-                document.querySelector('#loader').style.display = "none";
             });
         });
         
@@ -329,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     saveEditButton.addEventListener('click', async function(event) {
         event.preventDefault();
-        const blogId = indexHolder.textContent; // Assuming the indexHolder contains the blog post ID
+        const blogId = indexHolder.textContent; 
         const formData = new FormData();
         formData.append('title', titleInput.value.trim());
         formData.append('content', contentInput.value.trim());
@@ -339,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const token = sessionStorage.getItem('token'); // Replace getToken() with your function to retrieve the token
+        const token = sessionStorage.getItem('token'); 
 
         try {
             const response = await fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${blogId}`, {
@@ -353,19 +326,18 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Failed to update blog post.');
             }
+            document.querySelector("#editor1").innerHTML = "";
 
             resetForm();
-            window.location.reload(); // Reload the page after successful update
+            window.location.reload(); 
         } catch (error) {
             alert('Error updating blog post:'.concat( error.message));
-            // Handle error gracefully
         }
     });
 
     function validateForm() {
         let isValid = true;
-
-        // Reset error messages
+ 
         editTitleError.textContent = "";
         editImageError.textContent = "";
         editContentError.textContent = "";
@@ -397,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector("#home-render").addEventListener('click', () => {
-        window.location.href = "/"; // Redirect to home page when clicking the home button
+        window.location.href = "/"; 
     });
     document.querySelector("#home-render").innerHTML = sessionStorage.getItem('email')
 
@@ -423,6 +395,19 @@ const tex = window.tex;
             console.log("Editor:", content);
         }
     });
+    // tex.init({
+    //     element: document.querySelector('.editor2'),
+    //     buttons: [
+    //         'fontSize', 'bold', 'italic', 'underline', 'strikethrough', 'heading1', 
+    //         'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 
+    //         'line', 'link', 'image', 'html', 'textColor', 'textBackColor', 'indent', 
+    //         'outdent', 'undo', 'redo', 'justifyCenter', 'justifyFull', 'justifyLeft', 
+    //         'justifyRight'
+    //     ],   
+    //     onChange: (content) => {
+    //         console.log("Editor:", content);
+    //     }
+    // });
 
     
 

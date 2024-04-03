@@ -63,6 +63,7 @@
             // Select the article content
             const articleContent = document.querySelector('.article-content');
             articleContent.innerHTML = article.content;
+            document.querySelector('.article-timestamp').innerHTML = (new Date(article.timestamp)).toLocaleDateString()
 
             // Select the article meta
             const articleMeta = document.querySelector('.article-meta');
@@ -94,6 +95,7 @@
                 const commentAuthor = document.createElement('div');
                 commentAuthor.classList.add('comment-author');
                 commentAuthor.textContent = comment.name;
+
 
                 // Create the comment body
                 const commentBody = document.createElement('div');
@@ -280,7 +282,7 @@ function handleComment() {
             
         </div>
         <div class="article-meta">
-            <div class="article-author">By: John Doe</div>
+            <div class="article-author">By: Alx Holbert</div>
             <div id="like-button">
                 <button> </button>
             </div>

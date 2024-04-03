@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            // Assuming data is an array of articles
+
             var articles = data || [];
             articles.forEach((article, index) => {
                 var blogCard = document.createElement('div');
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="blog-info">
                         <h3>${article.title}</h3>
                         <div class="content-body">
-                            <p class="blog-cont" id="articleContent">${article.content}</p>
+                            <p class="blog-cont" id="articleContent">${article.content.substring(0, 500) + "..."}</p>
                         </div>
                         <div class="meta">
                             <a href="./dashboard/article.html?articleId=${article._id}">Read more</a>
@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error fetching articles:', error);
-            // Handle errors gracefully, e.g., display an error message to the user
         })
         .finally(() => {
             loader.style.display = "none";
@@ -68,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var subjectInput = document.getElementById("subject");
     var messageInput = document.getElementById("message");
 
-    // Error message spans
+
     var fullNameError = document.getElementById("full-name-error");
     var emailError = document.getElementById("email-error");
     var subjectError = document.getElementById("subject-error");
@@ -77,27 +76,27 @@ document.addEventListener('DOMContentLoaded', function() {
     contactForm.addEventListener("submit", function(event) {
         event.preventDefault();
         
-        // Clear previous error messages
+        
         fullNameError.textContent = "";
         emailError.textContent = "";
         subjectError.textContent = "";
         messageError.textContent = "";
 
-        // Validate full name
+
         if (fullNameInput.value.trim() === "") {
             fullNameError.textContent = "Full Name is required.";
         }
 
-         // Validate subject
+    
          if (subjectInput.value.trim() === "") {
             subjectError.textContent = "Subject  is required.";
         }
-         // Validate Message body
+
          if (messageInput.value.trim() === "") {
             messageError.textContent = "Message  is required.";
             
         }
-        // Validate email
+
         if (emailInput.value.trim() === "") {
             emailError.textContent = "Email is required.";
         } else if (!isValidEmail(emailInput.value.trim())) {
@@ -109,13 +108,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Function to validate email format
     function isValidEmail(email) {
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // Function to save form data to local storage
     function saveFormData() {
         var formData = {
             fullName: fullNameInput.value.trim(),
@@ -138,11 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-                    // Display a success message
-                    alert('Message sent successfully');
                     window.location.reload();
                 } else {
-                    // Display an error message
                     alert('Failed to send message. Please try again later.');
                 }
             })

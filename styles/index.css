@@ -136,6 +136,7 @@ body main {
   height: 100%;
 }
 
+
 .content-body h1 {
   font-size: 5rem;
   font-weight: bold;
@@ -1009,3 +1010,11 @@ iframe{
 }
 
 
+.blog-card {
+  max-height: 40rem;
+}
+.blog-card p{
+  max-height: 10rem; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

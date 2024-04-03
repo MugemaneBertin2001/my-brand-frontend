@@ -394,3 +394,30 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector("#home-render").style.textAlignment = "center"
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+const tex = window.tex;
+
+tex.init({
+        element: document.querySelector('.editor1'),
+        buttons: ['fontSize', 'bold', 'italic', 'underline', 'strikethrough', 'heading1', 'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 'line', 'link', 'image', 'html', 'textColor', 'textBackColor', 'indent', 'outdent', 'undo', 'redo', 'justifyCenter', 'justifyFull', 'justifyLeft', 'justifyRight'],   
+  onChange: (content) => {
+            console.log("Editor 1:", content);
+        }
+    });
+
+    tex.init({
+        element: document.querySelector('.editor1'),
+        buttons: ['bold', 'italic', 'underline', 'strikethrough', 'textColor', 'heading1', 'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 'line', 'link', 'image', 'html'],
+        defaultParagraphSeparator: 'p',
+        styleWithCSS: false,
+        theme: 'light',
+        onChange: (content) => {
+            console.log("Editor 2:", content);
+        }
+    });
+
+    
+
+});

@@ -668,3 +668,8 @@ button[type="submit"]:hover {
 .meta{
     gap: 20px;
 }
+
+.form-group button, .form-group button:hover{
+    background-color: #000;
+    color: #ffffff;
+}

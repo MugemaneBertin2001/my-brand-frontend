@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
         // Fetch endpoint with Bearer token and FormData for file upload
         var token = sessionStorage.getItem('token');
+        
         fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs', {
             method: 'POST',
             headers: {

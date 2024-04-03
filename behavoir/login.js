@@ -32,6 +32,7 @@ function validateForm(event) {
         showError("passwordError", "Please enter your password.");
     }
     else {
+        document.querySelector('#loader').style.display = "block";
         fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/users/login', {
             method: 'POST',
             headers: {
@@ -72,8 +73,10 @@ function validateForm(event) {
             console.error('Error authenticating user:', error);
             showError("loginError", "An error occurred while logging in. Please try again later.");
         });
+        document.querySelector('#loader').style.display = "block";
     }
 }
+
 function decodeJwt(token) {
     const payloadBase64 = token.split('.')[1];
     const decodedPayload = atob(payloadBase64);

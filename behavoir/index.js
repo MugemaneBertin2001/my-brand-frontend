@@ -11,7 +11,9 @@ function closeMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
     var blogCardsContainer = document.getElementById('blogCardsContainer');
+    document.querySelector('#loader').style.display = "block";
 
     fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/blogs')
         .then(response => {
@@ -32,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="blog-info">
                         <h3>${article.title}</h3>
                         <div class="content-body">
-                            <p>${article.content}</p>
+                        <p class="blog-cont" id="articleContent">${article.content}</p>
                         </div>
                         <div class="meta">
                             <a href="./dashboard/article.html?articleId=${article._id}">Read more</a>
@@ -51,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error fetching articles:', error);
             // Handle errors gracefully, e.g., display an error message to the user
         });
+        document.querySelector('#loader').style.display = "none";
 });
 
 

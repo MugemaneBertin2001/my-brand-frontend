@@ -52,7 +52,7 @@ function validateForm(event) {
             password: password,
             role: 'user'
         };
-
+        document.querySelector('#loader').style.display = "block";
         fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/users/register', {
             method: 'POST',
             headers: {
@@ -69,6 +69,7 @@ function validateForm(event) {
         .catch(error => {
             console.error('There was a problem registering the user:', error);
         });
+        document.querySelector('#loader').style.display = "none";
 
     }
 

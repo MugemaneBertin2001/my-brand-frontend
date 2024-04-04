@@ -212,82 +212,7 @@ function renderEditModal(article, index) {
     imageInput.value = article.image
     modalContent.style.display = 'block';
 }
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#loader').style.display = "block"
-    const messageCardsContainer = document.querySelector('.message-cards');
-    fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/message')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch messages');
-            }
-            return response.json();
-        })
-        .then(messages => {
-            console.log('All messages:', messages);
-            renderMessageCards(messages);
-        })
 
-   
-    function renderMessageCards(messages) {
-
-        messageCardsContainer.innerHTML = '';
-
-        messages.forEach((message, index) => {
-
-            const messageCard = document.createElement('div');
-            messageCard.classList.add('message-card');
- 
-            messageCard.innerHTML = `
-                <div class="sender-info">
-                    <div class="sender-name">${message.fullName}</div>
-                </div>
-                <div class="message-info">
-                    <div class="message-subject">${message.subject}</div>
-                    <div class="message-body">
-                        <p>${message.messageBody}</p>
-                    </div> 
-                </div>
-                <div class="meta">
-                    <div class="message-timestamp">${message.timestamp}</div>
-                    <button class="respond-btn">Respond</button>
-                    <button class="delete-btn" data-index="${message._id}">Delete</button>
-                </div>
-            `;
-
-            messageCardsContainer.appendChild(messageCard);
-        });
-        document.querySelector('#loader').style.display = "none"
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        deleteButtons.forEach(deleteBtn => {
-            deleteBtn.addEventListener('click', () => {
-                const messageId = deleteBtn.getAttribute('data-index');
-                
-               
-                const token = sessionStorage.getItem('token'); 
-                document.querySelector('#loader').style.display = "block"
-                
-                fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/message/${messageId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to delete message');
-                    }
-                    window.location.reload()
-                })
-                .catch(error => {
-                    console.error(error);
-                    
-                });
-            });
-        });
-        
-    }
-});
 
 document.addEventListener('DOMContentLoaded', function() {
     const saveEditButton = document.getElementById('saveEditButton');
@@ -395,19 +320,7 @@ const tex = window.tex;
             console.log("Editor:", content);
         }
     });
-    // tex.init({
-    //     element: document.querySelector('.editor2'),
-    //     buttons: [
-    //         'fontSize', 'bold', 'italic', 'underline', 'strikethrough', 'heading1', 
-    //         'heading2', 'paragraph', 'removeFormat', 'quote', 'olist', 'ulist', 'code', 
-    //         'line', 'link', 'image', 'html', 'textColor', 'textBackColor', 'indent', 
-    //         'outdent', 'undo', 'redo', 'justifyCenter', 'justifyFull', 'justifyLeft', 
-    //         'justifyRight'
-    //     ],   
-    //     onChange: (content) => {
-    //         console.log("Editor:", content);
-    //     }
-    // });
+ 
 
     
 

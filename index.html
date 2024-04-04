@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <title>Home: my brand</title>
 </head>
@@ -404,31 +405,8 @@
                 <div class="contact-f-container">
                     <h1>Leave us your info</h1>
                     <div class="form-container">
-                        <!-- Contact form -->
-                        <form id="contact-form" method="post">
-                            <div class="form-group">
-                                <label for="full-name">Full Name (required)</label>
-                                <input type="text" id="full-name" name="full-name">
-                                <span id="full-name-error" class="error-label "></span> <!-- Error message for full name -->
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Your Email (required)</label>
-                                <input type="email" id="email" name="email">
-                                <span id="email-error" class="error-label "></span> <!-- Error message for email -->
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <input type="text" id="subject" name="subject">
-                                <span id="subject-error" class="error-label "></span> <!-- Error message for subject -->
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Your Message</label>
-                                <textarea id="message" name="message" rows="5"></textarea>
-                                <span id="message-error" class="error-label "></span> <!-- Error message for message -->
-                            </div>
-                            <button type="submit">Submit</button>
-                        </form>
-                        <label id="error-label" class="error-label "></label>
+                       
+                    
                     </div>
                 </div>
                 
@@ -506,3 +484,153 @@
 
     })
 </script>
+
+
+<script type="text/babel">
+    const ContactForm = () => {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const fullNameInput = document.getElementById("full-name");
+        const emailInput = document.getElementById("email");
+        const subjectInput = document.getElementById("subject");
+        const messageInput = document.getElementById("message");
+
+        const fullNameError = document.getElementById("full-name-error");
+        const emailError = document.getElementById("email-error");
+        const subjectError = document.getElementById("subject-error");
+        const messageError = document.getElementById("message-error");
+
+        fullNameError.textContent = "";
+        emailError.textContent = "";
+        subjectError.textContent = "";
+        messageError.textContent = "";
+
+        if (fullNameInput.value.trim() === "") {
+          fullNameError.textContent = "Full Name is required.";
+          return;
+        }
+
+        if (subjectInput.value.trim() === "") {
+          subjectError.textContent = "Subject is required.";
+          return;
+        }
+
+        if (messageInput.value.trim() === "") {
+          messageError.textContent = "Message is required.";
+          return;
+        }
+
+        if (emailInput.value.trim() === "") {
+          emailError.textContent = "Email is required.";
+          return;
+        } else if (!isValidEmail(emailInput.value.trim())) {
+          emailError.textContent = "Invalid email format.";
+          return;
+        }
+        saveFormData();
+      };
+
+      const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+
+      const saveFormData = () => {
+        const formData = {
+    fullName: document.getElementById("full-name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    subject: document.getElementById("subject").value.trim(),
+    messageBody: document.getElementById("message").value.trim(),
+  };
+
+  // Display loader
+  const loader = document.querySelector('#loader');
+  loader.style.display = "block";
+
+  fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/message', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log("Form data submitted successfully!");
+      loader.style.display = "none";
+      clearInput(document.getElementById("full-name"));
+      clearInput(document.getElementById("email"));
+      clearInput(document.getElementById("subject"));
+      clearInput(document.getElementById("message"));
+    } else {
+      console.error('Failed to submit form data.');
+      loader.style.display = "none";
+      const errorLabel = document.getElementById("error-label");
+      errorLabel.textContent = 'Failed to submit form data. Please try again later.';
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    loader.style.display = "none";
+    const errorLabel = document.getElementById("error-label");
+    errorLabel.textContent = 'An unexpected error occurred. Please try again later.';
+  });
+      };
+
+      const clearInput = (input) => {
+        input.value = "";
+      };
+
+      return (
+        <div>
+          <form id="contact-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="full-name">Full Name (required)</label>
+              <input type="text" id="full-name" name="full-name" />
+              <span id="full-name-error" className="error-label"></span>
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Your Email (required)</label>
+              <input type="email" id="email" name="email" />
+              <span id="email-error" className="error-label"></span>
+            </div>
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input type="text" id="subject" name="subject" />
+              <span id="subject-error" className="error-label"></span>
+            </div>
+            <div className="form-group">
+              <label htmlFor="message">Your Message</label>
+              <textarea id="message" name="message" rows="5"></textarea>
+              <span id="message-error" className="error-label"></span>
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+          <label id="error-label" className="error-label"></label>
+        </div>
+      );
+    };
+    ReactDOM.render(<ContactForm />, document.querySelector('.form-container'));
+  </script>
+
+  <style>
+    
+.form-group {
+      margin-bottom: 15px;
+    }
+    .error-label {
+      color: red;
+      font-size: 12px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>

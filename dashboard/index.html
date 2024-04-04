@@ -99,8 +99,8 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-        const SiteCard = ({ icon, title, count, loading }) => {
-    return (
+        const SiteCard = ({ icon, title, count, loading, route }) => {
+    return (<a href={`/dashboard/${route}`}>
         <div className="card site-card">
             <i className={icon}></i>
             <h2>{title}</h2>
@@ -110,6 +110,7 @@
                 <p>{count}</p>
             )}
         </div>
+    </a>
     );
 };
 
@@ -162,8 +163,8 @@
 
     return (
         <>
-            <SiteCard icon="fas fa-newspaper" title="Articles" count={articlesCount} loading={loadingArticles} />
-            <SiteCard icon="fas fa-envelope" title="Messages" count={messagesCount} loading={loadingMessages} />
+            <SiteCard icon="fas fa-newspaper" title="Articles" count={articlesCount} loading={loadingArticles} route={"articles.html"}/>
+            <SiteCard icon="fas fa-envelope" title="Messages" count={messagesCount} loading={loadingMessages} route={"messages.html"}/>
         </>
     );
 };

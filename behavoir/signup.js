@@ -1,9 +1,8 @@
-
 document.addEventListener('DOMContentLoaded', function(){
     document.getElementById("signupForm").addEventListener("submit", validateForm);
     if (sessionStorage.getItem("role")==='admin') {
         window.location.href = "/dashboard"
-    }else if( sessionStorage.getItem('role')==="user"){
+    } else if( sessionStorage.getItem('role')==="user") {
         window.location.href = "/"
     }
 });
@@ -13,6 +12,9 @@ function validateForm(event) {
 
     // Reset error messages
     resetErrors();
+    
+    // Display loader
+    document.querySelector('#loader').style.display = "block";
 
     // Get form input values
     var fullName = document.getElementById("fullName").value.trim();
@@ -52,7 +54,6 @@ function validateForm(event) {
             password: password,
             role: 'user'
         };
-        document.querySelector('#loader').style.display = "block";
         fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/users/register', {
             method: 'POST',
             headers: {
@@ -68,14 +69,13 @@ function validateForm(event) {
         })
         .catch(error => {
             console.error('There was a problem registering the user:', error);
+        })
+        .finally(() => {
+            // Hide loader after request completion
+            document.querySelector('#loader').style.display = "none";
         });
-        document.querySelector('#loader').style.display = "none";
-
+        
     }
-
-    
-       
-   
 }
 
 function showError(id, message) {

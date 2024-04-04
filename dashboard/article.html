@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Single Article</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="../styles/dashboard.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+        #like-button button{
+            border: 0;
+        }
         .loader {
           border: 16px solid #f3f3f3;
           border-radius: 50%;
@@ -19,7 +25,7 @@
           margin-top: -60px; 
           margin-left: -60px; 
           z-index: 9999;
-          display: block; 
+          display: none; 
         }
         
         @keyframes spin {
@@ -27,294 +33,233 @@
           100% { transform: rotate(360deg); }
         }
       </style>
- 
 </head>
-<script>
-   document.addEventListener('DOMContentLoaded', function() {
-    // Get the query parameters from the URL
-    const queryParams = new URLSearchParams(window.location.search);
-
-    // Get the value of the "articleId" parameter
-    const articleId = queryParams.get('articleId');
-
-    // Fetch the article from the API using the articleId
-    document.querySelector('#loader').style.display = "block";
-    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(article => {
-            // Once the article is fetched, populate the DOM elements with the article data
-
-            // Select the article header
-            const articleHeader = document.querySelector('.article-header');
-
-            // Populate the article header with data
-            const articleImage = articleHeader.querySelector('.article-image');
-            articleImage.src = article.blogImage;
-            articleImage.alt = 'Article Image';
-
-            const articleTitle = articleHeader.querySelector('.article-title');
-            articleTitle.textContent = article.title;
-
-            // Select the article content
-            const articleContent = document.querySelector('.article-content');
-            articleContent.innerHTML = article.content;
-            document.querySelector('.article-timestamp').innerHTML = (new Date(article.timestamp)).toLocaleDateString()
-
-            // Select the article meta
-            const articleMeta = document.querySelector('.article-meta');
-
-    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/comment`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+<body id="singleBlogPage">
+    <script type="text/babel">
+        const formatDate = (timestamp) => {
+            const date = new Date(timestamp);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = date.toLocaleDateString('en-US', options);
+            const time = date.toLocaleTimeString('en-US');
+            return `${formattedDate} at ${time}`;
         }
-        return response.json();
-    })
-    .then(comments => {
-        // Select the comments container
-        const commentsContainer = document.querySelector('.comments-container');
-        const commentsInd = commentsContainer.querySelector('h2');
+        const SingleBlogPage = () => {
+            const [article, setArticle] = React.useState({});
+            const [loading, setLoading] = React.useState(true);
+            const [likes, setLikes] = React.useState(0);
+            const [commentData, setCommentsData] = React.useState();
+            const [commentNumber, setCommentNumber] = React.useState();
+            const [articleId, setArticleId] = React.useState()
+ 
+        
+            React.useEffect(() => {
+                const queryParams = new URLSearchParams(window.location.search);
+                const articleId = queryParams.get('articleId');
+                setArticleId(articleId)
+        
+                // Fetch article content
+                fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(articleData => {
+                        setArticle(articleData);
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem fetching the article:', error);
+                        setLoading(false);
+                    });
+        
+                // Fetch likes
+                fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/likes`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(likesData => {
+                        setLikes(likesData.length);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem fetching likes:', error);
+                    });
 
-        // Update the comments indicator with the total number of comments
-        commentsInd.innerHTML = `${comments.comments.length} ${commentsInd.innerHTML}`;
+                    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/comment`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(commentData => {
+                       setCommentsData(commentData.comments)
+                       setCommentNumber(commentData.comments.length)
+                       
+                    })
+                    .catch(error => {
+                        console.error('There was a problem fetching likes:', error);
+                    });
+           
+            }, []);
 
-        // Check if there are comments for the article
-        if (comments && comments.comments.length > 0) {
-            // Populate the comments container with comments
-            comments.comments.forEach(comment => {
-                // Create a comment element
-                const commentElement = document.createElement('div');
-                commentElement.classList.add('comment');
-
-                // Create the comment author
-                const commentAuthor = document.createElement('div');
-                commentAuthor.classList.add('comment-author');
-                commentAuthor.textContent = comment.name;
-
-
-                // Create the comment body
-                const commentBody = document.createElement('div');
-                commentBody.classList.add('comment-body');
-                commentBody.textContent = comment.body;
-
-                // Append the comment author and body to the comment element
-                commentElement.appendChild(commentAuthor);
-                commentElement.appendChild(commentBody);
-
-                // Append the comment element to the comments container
-                commentsContainer.appendChild(commentElement);
-            });
-        } else {
-            // If there are no comments, display a message
-            const noCommentsMessage = document.createElement('div');
-            noCommentsMessage.textContent = 'No comments available.';
-            commentsContainer.appendChild(noCommentsMessage);
-        }
-    })
-    .catch(error => {
-        console.error('There was a problem fetching comments:', error);
-    });
-    document.querySelector('#loader').style.display = "none";
-
-    // likes handlings
-
-    const userToken = sessionStorage.getItem('token');
-    document.querySelector('#loader').style.display = "block";
-
-    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/likes`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    // Add any required body parameters for the POST request, if applicable
-    // body: JSON.stringify({ /* your request body parameters */ })
-})
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(likes => {
-        // Update the like button with the number of likes
-        const likeButton = document.querySelector('#like-button');
-        likeButton.innerHTML = likes.length;
-        likeButton.innerHTML += (article.likes.length > 1 ? " likes" : " like");
-
-        // Add event listener to the like button
-        likeButton.addEventListener('click', function() {
-
-            const userToken = sessionStorage.getItem('token')
-
-            if(!userToken){
-                window.location.href = '/admin/login.html'
-            }
-    // Construct the request headers
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userToken}` // Include the token in the Authorization header
-    };
-
-    // Send POST request to like the article
-    document.querySelector('#loader').style.display = "block";
-    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/like`, {
-        method: 'POST',
-        headers: headers
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        // Parse the response JSON
-        return response.json();
-    })
-    .then(data => {
-        // Check if the like was added or removed
-        const message = data.message || 'You liked the article.';
-        // Display the message in an alert
-        window.location.reload();
-    })
-    .catch(error => {
-        console.error('There was a problem liking the article:', error);
-    });
-});
-document.querySelector('#loader').style.display = "none";
-    })
-    .catch(error => {
-        console.error('There was a problem fetching the article:', error);
-    });
-
-
-
-    
-    })
-            .catch(error => {
-                console.error('There was a problem fetching the article:', error);
-            });
-    });
-
-
-function handleComment() {
-    document.querySelector('#loader').style.display = "block";
-    const commentForm = document.getElementById('add-comment-form');
-    commentForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form submission
-
-        const authorInput = document.getElementById('comment-author');
-        const bodyInput = document.getElementById('comment-body');
-        const author = authorInput.value.trim();
-        const body = bodyInput.value.trim();
-
-        const authorError = document.getElementById('author-error');
-        const bodyError = document.getElementById('body-error');
-
-        authorError.innerHTML = '';
-        bodyError.innerHTML = '';
-
-        if (!author) {
-            authorError.innerHTML = "Name is required";
-            return;
-        }
-        if (!body) {
-            bodyError.innerHTML = "Comment is required";
-            return;
-        }
-
-        // Get the article ID from the URL query parameters
-        const queryParams = new URLSearchParams(window.location.search);
-        const articleId = queryParams.get('articleId');
-
-        // Construct the comment object
-        const comment = {
-            name: author,
-            body: body
-        };
-
-        // Send a POST request to add the comment
-        fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/comment`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(comment)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Check if the API response contains a message indicating success
-            if (data && data.message === "Comment added successfully") {
-                // Optionally, you can update the UI to indicate that the comment was added successfully
-                window.location.reload();
-
-                // Clear the form fields
-                commentForm.reset();
-            } else {
-                // Handle other API responses or errors
-                console.error('Failed to add comment:', data);
-            }
-        })
-        .catch(error => {
-            console.error('There was a problem adding the comment:', error);
-        });
-    });
-    document.querySelector('#loader').style.display = "none";
-}
-
-
-</script>
-<body>
-    <div class="article-container">
-        <a href="/" class="back-link">Go Back Home</a>
-        <div class="article-header">
-            <img class="article-image">
-            <h1 class="article-title">The Rise of Artificial Intelligence in Business</h1>
-        </div>
-        <div class="article-content">
-            
-        </div>
-        <div class="article-meta">
-            <div class="article-author">By: Alx Holbert</div>
-            <div id="like-button">
-                <button> </button>
-            </div>
-            <div class="article-timestamp">Published on: February 22, 2024</div>
-        </div>
-
-        <!-- Comments section -->
-        <div class="comments-container">
-            <h2>Comments</h2>
-        </div>
-
-        <!-- Add comment form -->
-        <form id="add-comment-form">
-            <h3>Add a Comment</h3>
-            <div>
-                <label for="comment-author">Your Name:</label>
-                <input type="text" id="comment-author" name="comment-author">
-                <span class="error-message" id="author-error"></span>
-            </div>
-            <div>
-                <label for="comment-body">Your Comment:</label>
-                <textarea id="comment-body" name="comment-body" rows="4"></textarea>
-                <span class="error-message" id="body-error"></span>
-            </div>
-            <button onclick="handleComment()" id="comment-button">Submit</button>
-        </form>
-        <div class="loader" id="loader"></div>
         
         
-    </div>
+    const handleComment = () => {
+                    const authorInput = document.getElementById('comment-author');
+                    const bodyInput = document.getElementById('comment-body');
+                    const author = authorInput.value.trim();
+                    const body = bodyInput.value.trim();
 
+                    const authorError = document.getElementById('author-error');
+                    const bodyError = document.getElementById('body-error');
 
+                    authorError.textContent = '';
+                    bodyError.textContent = '';
+
+                    if (!author) {
+                        authorError.textContent = "Name is required";
+                        return;
+                    }
+                    if (!body) {
+                        bodyError.textContent = "Comment is required";
+                        return;
+                    }
+
+                    const queryParams = new URLSearchParams(window.location.search);
+                    const articleId = queryParams.get('articleId');
+
+                    const comment = {
+                        name: author,
+                        body: body
+                    };
+                    fetch(`https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/comment`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(comment)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data && data.message === "Comment added successfully") {
+                            window.location.reload();
+                            document.getElementById('add-comment-form').reset();
+                        } else {
+                            console.error('Failed to add comment:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem adding the comment:', error);
+                    });
+};
+
+                const handleLike = () => {
+                    const userToken = sessionStorage.getItem('token');
+
+                    if (!userToken) {
+                        window.location.href = '/admin/login.html';  
+                         
+                        return;
+                    }
+
+                    
+                    const likeEndpoint = `https://my-brand-backend-lmk2.onrender.com/api/v1/blogs/${articleId}/like`;
+
+                    fetch(likeEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${userToken}`  
+                        },
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Article liked successfully:', data);
+                        window.location.reload() 
+                    })
+                    .catch(error => {
+                        console.error('There was a problem liking the article:', error);
+                    });
+                };
+
+        
+            return (
+                <>
+                    <div class="article-container">
+                        <a href="/" class="back-link">Go Back Home</a>
+                        <div class="article-header">
+                            <img className="article-image" src={article.blogImage} alt="Article Image" />
+                            <h1 className="article-title">{article.title}</h1>
+                        </div>
+                        <div class="article-content">
+                            <div className="article-content">{article.content}</div> 
+                        </div>
+                        <div class="article-meta">
+                            <div class="article-author">By: Alx Holbert</div>
+                            <div id="like-button">
+                                <button id='like' onClick={handleLike}>{likes} {likes === 1 ? "like" : "likes"}</button>
+
+                            </div>
+                            <div class="article-timestamp">{formatDate(article.timestamp)}</div>
+                        </div>
+        
+                        <div class="comments-container">
+                            <h2>{commentNumber} {commentNumber > 1? "commments":"comment"}</h2>
+                        </div>
+        
+                        <form id="add-comment-form" onSubmit={(e) => { e.preventDefault(); handleComment(); }}>
+                            {commentData && commentData.map(comment => (
+                                <div key={comment.id} className="comment">
+                                    <div className="comment-author">{comment.name}</div>
+                                    <div className="comment-body">{comment.body}</div>
+                                </div>
+                            ))}
+                            <div>
+                                <label for="comment-author">Your Name:</label>
+                                <input type="text" id="comment-author" name="comment-author" />
+                                <span class="error-message" id="author-error"></span>
+                            </div>
+                            <div>
+                                <label for="comment-body">Your Comment:</label>
+                                <textarea id="comment-body" name="comment-body" rows="4"></textarea>
+                                <span class="error-message" id="body-error"></span>
+                            </div>
+                            <button type="submit" id="comment-button">Submit</button>
+                        </form>
+
+                        <div class="loader" id="loader" style={{ display: loading ? 'block' : 'none' }}></div>
+                    </div>
+                </>
+            );
+        }
+        
+        ReactDOM.render(<SingleBlogPage />, document.getElementById('singleBlogPage'));
+        </script>
+        
 </body>
 </html>
-

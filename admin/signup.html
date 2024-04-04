@@ -3,55 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Page</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="../styles/admin.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        .error-message {
-            color: red;
+        .loader {
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          height: 120px;
+          animation: spin 2s linear infinite;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          margin-top: -60px; 
+          margin-left: -60px; 
+          z-index: 9999;
+          display: none; 
         }
-    </style>
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
 </head>
-<body>
-    <div class="main">
-        <div class="left">
-            <div>
-                <img src="./image/account.png" alt="" srcset="">
-            </div>
-        </div>
-        <div class="right">
-            <form id="signupForm" action="#">
-                <h1>Sign up</h1>
-                <div>
-                    <p>Full Name</p>
-                    <p><input type="text" id="fullName"></p>
-                    <span id="fullNameError" class="error-message"></span>
-                </div>
-                <div>
-                    <p>Email</p>
-                    <p><input type="text" id="email"></p>
-                    <span id="emailError" class="error-message"></span>
-                </div>
-                <div>
-                    <p>Password</p>
-                    <p><input type="password" id="password"></p>
-                    <span id="passwordError" class="error-message"></span>
-                </div>
-                <div>
-                    <p>Confirm Password</p>
-                    <p><input type="password" id="confirmPassword"></p>
-                    <span id="confirmPasswordError" class="error-message"></span>
-                </div>
-                <div>
-                    <p><button type="submit">Sign up</button></p>
-                </div>
-                <div>
-                    <p class="signup-link">Have an Account? <a href="./login.html">Log in</a></p>
-                </div>
-                <div class="loader" id="loader"></div>
-            </form>
-        </div>
-    </div>
+<body id="signup">
+<script type="text/babel">
+function showError(id, message) {
+    var errorElement = document.getElementById(id);
+    errorElement.textContent = message;
+}
+function decodeJwt(token) {
+    const payloadBase64 = token.split('.')[1];
+    const decodedPayload = atob(payloadBase64);
+    return JSON.parse(decodedPayload);
+}
 
-    <script src="../behavoir/signup.js"></script>
+function resetErrors() {
+    var errorElements = document.querySelectorAll(".error-message");
+    errorElements.forEach(function(element) {
+        element.textContent = "";
+    });
+}
+
+function isValidEmail(email) {
+    var emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(email);
+}
+const Signup = () => {
+    const [formData, setFormData] = React.useState({
+                fullName: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            });
+    const [loading, setLoading] = React.useState(false);
+
+    const handleChange = (event) => {
+                setFormData({
+                    ...formData,
+                    [event.target.id]: event.target.value
+                });
+            }
+
+    const handleSubmit = (event) => {
+                event.preventDefault();
+                resetErrors();
+
+                const { fullName, email, password, confirmPassword } = formData;
+
+
+                if (!fullName.trim()) {
+                    showError("fullNameError", "Please enter your full name.");
+                    return;
+                }
+                if (!email.trim()) {
+                    showError("emailError", "Please enter your email address.");
+                    return;
+                }
+                if (!isValidEmail(email)) {
+                    showError("emailError", "Please enter a valid email address.");
+                    return;
+                }
+                if (!password.trim()) {
+                    showError("passwordError", "Please enter a password.");
+                    return;
+                }
+                if (password.length < 8) {
+                    showError("passwordError", "Password must be at least 8 characters long.");
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    showError("confirmPasswordError", "Passwords do not match.");
+                    return;
+                }
+
+                setLoading(true);
+
+                const newUser = {
+                    fullName: fullName,
+                    email: email,
+                    password: password,
+                    role: 'user'
+                };
+
+                fetch('https://my-brand-backend-lmk2.onrender.com/api/v1/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newUser)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    window.location.href = "login.html";
+                })
+                .catch(error => {
+                    console.error('There was a problem registering the user:', error);
+                    showError("emailError", "An error occurred while signing up. Please try again later.");
+                })
+                .finally(() => {
+                    // Hide loader
+                    setLoading(false);
+                });
+            }
+
+            const showError = (id, message) => {
+                const errorElement = document.getElementById(id);
+                errorElement.textContent = message;
+            }
+
+            const resetErrors = () => {
+                const errorElements = document.querySelectorAll(".error-message");
+                errorElements.forEach(element => {
+                    element.textContent = "";
+                });
+            }
+
+            const isValidEmail = (email) => {
+                const emailRegex = /\S+@\S+\.\S+/;
+                return emailRegex.test(email);
+            }
+
+    
+return (
+    <>
+                <div className="main">
+                    <div className="left">
+                        <div>
+                            <img src="./image/account.png" alt="" srcSet="" />
+                        </div>
+                    </div>
+                    <div className="right">
+                        <form onSubmit={handleSubmit} id="signupForm" action="#">
+                            <h1>Sign up</h1>
+                            <div>
+                                <p>Full Name</p>
+                                <p><input type="text" id="fullName" value={formData.fullName} onChange={handleChange} /></p>
+                                <span id="fullNameError" className="error-message"></span>
+                            </div>
+                            <div>
+                                <p>Email</p>
+                                <p><input type="text" id="email" value={formData.email} onChange={handleChange} /></p>
+                                <span id="emailError" className="error-message"></span>
+                            </div>
+                            <div>
+                                <p>Password</p>
+                                <p><input type="password" id="password" value={formData.password} onChange={handleChange} /></p>
+                                <span id="passwordError" className="error-message"></span>
+                            </div>
+                            <div>
+                                <p>Confirm Password</p>
+                                <p><input type="password" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} /></p>
+                                <span id="confirmPasswordError" className="error-message"></span>
+                            </div>
+                            <div>
+                                <p><button type="submit">Sign up</button></p>
+                            </div>
+                            <div>
+                                <p className="signup-link">Have an Account? <a href="./login.html">Log in</a></p>
+                            </div>
+                            </form>
+                            </div>
+                            </div>
+                            <div className="loader" id="loader" style={{ display: loading ? 'block' : 'none' }}></div>
+                        </>
+            );
+}
+
+ReactDOM.render(<Signup />, document.getElementById('signup'));
+
+    </script>
 </body>
 </html>
